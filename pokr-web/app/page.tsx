@@ -3,6 +3,7 @@ import globalStore from '../store/global';
 
 export default function Home() {
 	const { theme, changeTheme } = globalStore();
+
 	const toggle = () => {
 		if (theme === 'dark') {
 			changeTheme('light');
