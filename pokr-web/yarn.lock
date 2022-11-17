@@ -2724,6 +2724,9 @@ __metadata:
     tailwindcss: ^3.2.4
     typescript: 4.8.4
     zustand: ^4.1.4
+  dependenciesMeta:
+    next@13.0.3:
+      unplugged: true
   languageName: unknown
   linkType: soft
 
