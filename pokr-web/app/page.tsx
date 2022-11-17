@@ -1,7 +1,7 @@
 'use client';
 import globalStore from '../store/global';
 
-export default function Home() {
+const Home = () => {
 	const { theme, changeTheme } = globalStore();
 
 	const toggle = () => {
@@ -11,11 +11,15 @@ export default function Home() {
 		}
 		changeTheme('dark');
 	};
+
 	return (
 		<div>
-			페이지
+			{Array.isArray(data) &&
+				data.map((d) => <h1 key={d.id_contents}>{d.title}</h1>)}
 			<h1>{theme}</h1>
 			<button onClick={toggle}>토글</button>
 		</div>
 	);
-}
+};
+
+export default Home;
