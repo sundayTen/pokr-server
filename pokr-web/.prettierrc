@@ -5,16 +5,5 @@
 	"tabWidth": 2,
 	"trailingComma": "all",
 	"printWidth": 80,
-	"bracketSpacing": true,
-	"overrides": [
-		{
-			"files": ["*.json", ".*rc"],
-			"options": {
-				"parser": "json5",
-				"quoteProps": "preserve",
-				"singleQuote": false,
-				"trailingComma": "none"
-			}
-		}
-	]
+	"bracketSpacing": true
 }
