@@ -6,24 +6,18 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY . .
 
-ARG PROFILE=live
 RUN echo PROFILE: $PROFILE
 
-RUN cd /app && echo 'YARN VERSION IN BUILDER: ' && yarn --version
+RUN cd /app 
 RUN yarn install --immutable
-RUN yarn build:deploy:$PROFILE
+RUN yarn build
 
 # step 2: copy files and run next
 FROM node:16-alpine AS runner
 RUN apk add --no-cache curl htop tcpdump
 
-#RUN addgroup -g 1001 -S nodejs
-#RUN adduser -S nextjs -u 1001
-
 WORKDIR /app
 
-# You only need to copy next.config.js if you are NOT using the default configuration
-# env 폴더는 복사할 필요 없다. 빌드후 빌드파일(.next/*)에 해당값이 들어가므로
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
@@ -33,13 +27,9 @@ COPY --from=builder /app/.yarnrc.yml ./.yarnrc.yml
 COPY --from=builder /app/.pnp.cjs ./.pnp.cjs
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/*.yaml ./
-COPY --from=builder /app/boot.js ./boot.js
 
-# RUN rm -rf /app/.yarn/unplugged && yarn rebuild
 #RUN chown -R nextjs:nodejs /app/.next
 RUN echo "YARN VERSION IN RUNNER: " && yarn --version
-
-#USER nextjs
 
 EXPOSE 8080
 
@@ -48,5 +38,4 @@ EXPOSE 8080
 # Uncomment the following line in case you want to disable telemetry.
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
 CMD [ "yarn", "start" ]
