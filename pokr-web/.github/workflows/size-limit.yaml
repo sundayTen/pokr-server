@@ -1,0 +1,13 @@
+name: '번들 사이즈 측정'
+on:
+  pull_request:
+    branches:
+      - develop
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: andresz1/size-limit-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
