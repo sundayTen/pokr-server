@@ -36,6 +36,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:18.0.25"],\
             ["@types/react-dom", "npm:18.0.8"],\
             ["autoprefixer", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:10.4.13"],\
+            ["classnames", "npm:2.3.2"],\
             ["cypress", "npm:11.1.0"],\
             ["dayjs", "npm:1.11.6"],\
             ["eslint", "npm:8.27.0"],\
@@ -1513,6 +1514,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/ci-job-number-npm-1.2.2-bfae9f3d0d-9da8edd2c1.zip/node_modules/ci-job-number/",\
           "packageDependencies": [\
             ["ci-job-number", "npm:1.2.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["classnames", [\
+        ["npm:2.3.2", {\
+          "packageLocation": "./.yarn/cache/classnames-npm-2.3.2-d2fdae468d-2c62199789.zip/node_modules/classnames/",\
+          "packageDependencies": [\
+            ["classnames", "npm:2.3.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -5041,6 +5051,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:18.0.25"],\
             ["@types/react-dom", "npm:18.0.8"],\
             ["autoprefixer", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:10.4.13"],\
+            ["classnames", "npm:2.3.2"],\
             ["cypress", "npm:11.1.0"],\
             ["dayjs", "npm:1.11.6"],\
             ["eslint", "npm:8.27.0"],\
