@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
-import styles from './Button.module.scss';
+import styles from '@components/common/button/Button.module.scss';
+// import styles from './Button.module.scss';
 
 interface ButtonProps {
   label: string;
@@ -34,6 +35,7 @@ const Button = (props: ButtonProps) => {
         [styles.border]: buttonStyle === 'BORDER',
         [styles.black]: buttonStyle === 'BLACK',
       })}
+      {...rest}
     >
       {label}
     </button>
