@@ -47,8 +47,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["next-images", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:1.8.4"],\
             ["pinst", "npm:3.0.0"],\
             ["postcss", "npm:8.4.19"],\
+            ["postcss-import", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:15.0.0"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:18.2.0"],\
+            ["sass", "npm:1.56.1"],\
             ["sharp", "npm:0.31.2"],\
             ["size-limit", "npm:8.1.0"],\
             ["tailwindcss", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:3.2.4"],\
@@ -3439,6 +3441,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["immutable", [\
+        ["npm:4.1.0", {\
+          "packageLocation": "./.yarn/cache/immutable-npm-4.1.0-f6635927b8-b9bc1f14fb.zip/node_modules/immutable/",\
+          "packageDependencies": [\
+            ["immutable", "npm:4.1.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["import-fresh", [\
         ["npm:3.3.0", {\
           "packageLocation": "./.yarn/cache/import-fresh-npm-3.3.0-3e34265ca9-2cacfad06e.zip/node_modules/import-fresh/",\
@@ -4518,7 +4529,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss", "npm:8.4.14"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:18.2.0"],\
-            ["sass", null],\
+            ["sass", "npm:1.56.1"],\
             ["styled-jsx", "virtual:1165c732605459ac6633a2420e1065a87770c907e3c4d5b8708f0fd58e19995b587cda69da6e4b525c3bbc9d1e383e6c8e3a6aac6a194bcca2a9576799abc9fd#npm:5.1.0"],\
             ["use-sync-external-store", "virtual:7444cbff967376dbf588a059b5e93d59f3ad168b4a606063aa1c1d92fb3daa9a3e7798d603df3e372757e337957420a40577edc2fd738cebdf34895680bd5e4e#npm:1.2.0"]\
           ],\
@@ -5062,8 +5073,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["next-images", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:1.8.4"],\
             ["pinst", "npm:3.0.0"],\
             ["postcss", "npm:8.4.19"],\
+            ["postcss-import", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:15.0.0"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:18.2.0"],\
+            ["sass", "npm:1.56.1"],\
             ["sharp", "npm:0.31.2"],\
             ["size-limit", "npm:8.1.0"],\
             ["tailwindcss", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:3.2.4"],\
@@ -5103,10 +5116,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
+        ["npm:15.0.0", {\
+          "packageLocation": "./.yarn/cache/postcss-import-npm-15.0.0-15d3fa0727-e504807251.zip/node_modules/postcss-import/",\
+          "packageDependencies": [\
+            ["postcss-import", "npm:15.0.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["virtual:44f461d62418278e51e6090fdf9974bc6530a4cca5d042ab1a56c54cdc1d9532a072bfba84ae6f50110a01b7057329dad248e3d92212e675b010e8c33158c23a#npm:14.1.0", {\
           "packageLocation": "./.yarn/__virtual__/postcss-import-virtual-7875f27cfe/0/cache/postcss-import-npm-14.1.0-fa5b457156-cd45d406e9.zip/node_modules/postcss-import/",\
           "packageDependencies": [\
             ["postcss-import", "virtual:44f461d62418278e51e6090fdf9974bc6530a4cca5d042ab1a56c54cdc1d9532a072bfba84ae6f50110a01b7057329dad248e3d92212e675b010e8c33158c23a#npm:14.1.0"],\
+            ["@types/postcss", null],\
+            ["postcss", "npm:8.4.19"],\
+            ["postcss-value-parser", "npm:4.2.0"],\
+            ["read-cache", "npm:1.0.0"],\
+            ["resolve", "patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"]\
+          ],\
+          "packagePeers": [\
+            "@types/postcss",\
+            "postcss"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:15.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/postcss-import-virtual-216b0377ff/0/cache/postcss-import-npm-15.0.0-15d3fa0727-e504807251.zip/node_modules/postcss-import/",\
+          "packageDependencies": [\
+            ["postcss-import", "virtual:9de8acb59b79c6c5e4f9e29ee07709eab1f843287516e86151a44875b64a9ca142fa0ffb3d5e61b87354b940fa1456c928028c55486bd7249291b31114a5387a#npm:15.0.0"],\
             ["@types/postcss", null],\
             ["postcss", "npm:8.4.19"],\
             ["postcss-value-parser", "npm:4.2.0"],\
@@ -5671,6 +5707,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/safer-buffer-npm-2.1.2-8d5c0b705e-cab8f25ae6.zip/node_modules/safer-buffer/",\
           "packageDependencies": [\
             ["safer-buffer", "npm:2.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["sass", [\
+        ["npm:1.56.1", {\
+          "packageLocation": "./.yarn/cache/sass-npm-1.56.1-d5befb920f-78e693e599.zip/node_modules/sass/",\
+          "packageDependencies": [\
+            ["sass", "npm:1.56.1"],\
+            ["chokidar", "npm:3.5.3"],\
+            ["immutable", "npm:4.1.0"],\
+            ["source-map-js", "npm:1.0.2"]\
           ],\
           "linkType": "HARD"\
         }]\

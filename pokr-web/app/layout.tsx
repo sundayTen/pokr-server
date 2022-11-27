@@ -1,5 +1,5 @@
 'use client';
-import './globals.css';
+import './globals.scss';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
