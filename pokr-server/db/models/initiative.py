@@ -9,12 +9,12 @@ class Initiative(Base):
     __tablename__ = "initiative"
 
     id = Column(Integer, primary_key=True)
-    keyresult_id = Column(Integer, ForeignKey("keyresult.id", ondelete="CASCADE"), nullable=False)
+    key_result_id = Column(Integer, ForeignKey("key_result.id", ondelete="CASCADE"), nullable=False)
     title = Column(String(300), nullable=False)
     description = Column(Text)
     priority = Column(Integer, nullable=False)
-    metrics_info = Column(String(300))
+    metrics_info = Column(String(30))
     goal_metrics = Column(Integer, nullable=False)
     current_metrics = Column(Integer, nullable=False)
 
-    initiatives = relationship(Memo.__name__, backref="initiative", passive_deletes=True)
+    memos = relationship(Memo.__name__, backref="initiative", passive_deletes=True)
