@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.auth.api import router as auth_router
 from api.index import router as index_router
 from api.reviews.api import router as review_router
+from api.templates.api import router as template_router
 from db.config import Base, engine
 from env import ENVIRONMENT
 
@@ -23,6 +24,7 @@ app.add_middleware(
 app.include_router(index_router, tags=["INDEX"], prefix="/api")
 app.include_router(auth_router, tags=["AUTH"], prefix="/api/auth")
 app.include_router(review_router, tags=["REVIEW"], prefix="/api/reviews")
+app.include_router(template_router, tags=["TEMPLATE"], prefix="/api/templates")
 
 if __name__ == "__main__":
     if ENVIRONMENT == "local":
