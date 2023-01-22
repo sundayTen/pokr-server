@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive';
  * 반응형 pc, mobile 체크
  * @param isRN
  */
-const useIsMobile = (isRN?: any) => {
+const useIsMobile = (isRN?: boolean) => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
 
