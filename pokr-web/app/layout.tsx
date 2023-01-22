@@ -2,7 +2,6 @@
 import './globals.scss';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import useIsMobile from 'hooks/useIsMobile';
 
 const queryClient = new QueryClient();
 
