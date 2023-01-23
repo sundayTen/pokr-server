@@ -1,0 +1,15 @@
+.root {
+  @apply outline-none appearance-none text-base;
+
+  height: 40px;
+  padding: 0 35px 0 16px;
+  border: 1px solid var(--content-gray3);
+  border-radius: 8px;
+  color: var(--text-body);
+  background: right 7px top 50%/22px no-repeat #fff
+    url('/images/down-arrow.png');
+
+  &::-ms-expand {
+    @apply hidden;
+  }
+}

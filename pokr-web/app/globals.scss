@@ -48,13 +48,17 @@ a {
   }
   body {
     color: black;
-    background: white;
+    background-color: #f6f7f9;
   }
 }
 
 #container {
-  @media screen and (min-width: 1225px) {
+  @screen desktop {
+    background-color: inherit;
     padding-left: 68px;
     padding-top: 68px;
+  }
+  @screen mobile {
+    padding-top: 48px;
   }
 }
