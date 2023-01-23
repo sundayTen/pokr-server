@@ -51,3 +51,10 @@ a {
     background: white;
   }
 }
+
+#container {
+  @media screen and (min-width: 1225px) {
+    padding-left: 68px;
+    padding-top: 68px;
+  }
+}
