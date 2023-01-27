@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from db.models.user import User
 from env import ADMIN_USER
 from errors import CREDENTIALS_EXCEPTION
-from jwt import check_user, create_access_token
+from jwt import create_access_token
 from schemas.common import Token
 
 router = APIRouter()
@@ -25,12 +25,7 @@ async def login_for_access_token(data: OAuth2PasswordRequestForm = Depends()):
     return Token(access_token=data.password, token_type="bearer")
 
 
-@router.get("/auth-test", description="JWT 인증 테스트", response_model=int)
-async def health_check(user: User = Depends(check_user)) -> int:
-    return user.id
-
-
-@router.get("/get-dummy-user", description="JWT 인증 테스트", response_model=Token)
-async def health_check() -> Token:
+@router.get("/get-dummy-user", description="JWT 더미 유저 생성", response_model=Token)
+async def get_dummy_user() -> Token:
     access_token: str = await create_access_token(User(id=1), 365)
     return Token(access_token=access_token, token_type="bearer")
