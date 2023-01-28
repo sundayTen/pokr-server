@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@components/common/header/Header.module.scss';
+import styles from '@components/common/globalLayout/header/Header.module.scss';
 import Link from 'next/link';
 import AutoHeightImage from '@components/common/image';
 import useInput from 'hooks/useInput';

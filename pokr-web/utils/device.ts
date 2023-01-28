@@ -46,7 +46,6 @@ const isIos = () => {
 
 /**
  * React Native Webview로부터 호출되었는지 확인합니다.
- * @param second
  */
 const isRN = () => {
   if (!isClientSide()) {

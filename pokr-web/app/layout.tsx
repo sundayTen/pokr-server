@@ -2,18 +2,13 @@
 import './globals.scss';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Header from '@components/common/header/Header';
-import Aside from '@components/common/aside';
 import useIsMobile from 'hooks/useIsMobile';
-import MobileHeader from '@components/common/header/MobileHeader';
+import GlobalLayout from '@components/common/GlobalLayout';
+import React from 'react';
 
 const queryClient = new QueryClient();
 
-interface GlobalLayout {
-  children: React.ReactNode;
-}
-
-const Layout = ({ children }: GlobalLayout) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const { isMobile } = useIsMobile();
 
   return (
@@ -26,11 +21,8 @@ const Layout = ({ children }: GlobalLayout) => {
         <QueryClientProvider client={queryClient}>
           {/* The rest of your application */}
           <ReactQueryDevtools initialIsOpen={false} />
-          {isMobile ? <MobileHeader /> : <Header />}
-          <div id="container">
-            {!isMobile && <Aside />}
-            {children}
-          </div>
+
+          <GlobalLayout>{children}</GlobalLayout>
         </QueryClientProvider>
       </body>
     </html>
