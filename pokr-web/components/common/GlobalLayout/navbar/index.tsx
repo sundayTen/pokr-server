@@ -12,7 +12,7 @@ const Navbar = () => {
       {TABS.map((tab) => (
         <Link
           href={tab.route}
-          className={currentPath === tab.route && styles.selected}
+          className={currentPath === tab.route ? styles.selected : undefined}
           key={tab.title}
         >
           <AutoHeightImage
