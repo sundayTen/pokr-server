@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from './navbar';
 import { Header, MobileHeader } from '@components/common/GlobalLayout/header';
 import useIsMobile from '@hooks/useIsMobile';
-import styles from './GlobalLayout.module.scss';
+import styles from '@components/common/GlobalLayout/GlobalLayout.module.scss';
 
 interface GlobalLayoutProps {
   children: React.ReactNode;
