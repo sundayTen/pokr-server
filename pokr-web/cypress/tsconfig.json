@@ -1,9 +1,0 @@
-// ! @phrygia ref: https://helloinyong.tistory.com/342
-{
-  "compilerOptions": {
-    "target": "es5",
-    "lib": ["es5", "dom"],
-    "types": ["cypress", "node"]
-  },
-  "include": ["**/*.ts"]
-}
