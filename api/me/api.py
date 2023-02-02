@@ -15,7 +15,7 @@ router.routes.extend(metrics_router.routes)
 @router.get("/okr", description="OKR 전체 데이터 반환", response_model=List[dict])
 async def get_my_okr(
     db: Session = Depends(get_db), user: User = Depends(check_user)
-) -> int:
+) -> List[dict]:
     return [
         {
             "objectiveId": 6,
