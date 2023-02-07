@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, ForeignKey, JSON
 
 from db.config import Base
+from db.models.common import DateBase
 
 
-class Template(Base):
+class Template(Base, DateBase):
     __tablename__ = "template"
 
     id = Column(Integer, primary_key=True)

@@ -2,14 +2,17 @@ from sqlalchemy import Column, Integer, String, Date, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
 from db.config import Base
+from db.models.common import DateBase
 from db.models.initiative import Initiative
 
 
-class KeyResult(Base):
+class KeyResult(Base, DateBase):
     __tablename__ = "key_result"
 
     id = Column(Integer, primary_key=True)
-    objective_id = Column(Integer, ForeignKey("objective.id", ondelete="CASCADE"), nullable=False)
+    objective_id = Column(
+        Integer, ForeignKey("objective.id", ondelete="CASCADE"), nullable=False
+    )
     title = Column(String(300), nullable=False)
     description = Column(Text)
     open_date = Column(Date, nullable=False)
@@ -19,4 +22,6 @@ class KeyResult(Base):
     goal_metrics = Column(Integer, nullable=False)
     current_metrics = Column(Integer, nullable=False)
 
-    initiatives = relationship(Initiative.__name__, backref="key_result", passive_deletes=True)
+    initiatives = relationship(
+        Initiative.__name__, backref="key_result", passive_deletes=True
+    )

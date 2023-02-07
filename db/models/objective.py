@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 
 from db.config import Base
+from db.models.common import DateBase
 
 
-class Objective(Base):
+class Objective(Base, DateBase):
     __tablename__ = "objective"
 
     id = Column(Integer, primary_key=True)

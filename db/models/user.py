@@ -2,12 +2,13 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from db.config import Base
+from db.models.common import DateBase
 from db.models.objective import Objective
 from db.models.review import Review
 from db.models.template import Template
 
 
-class User(Base):
+class User(Base, DateBase):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)

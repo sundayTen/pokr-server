@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Text
 
 from db.config import Base
+from db.models.common import DateBase
 
 
-class Review(Base):
+class Review(Base, DateBase):
     __tablename__ = "review"
 
     id = Column(Integer, primary_key=True)
