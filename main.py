@@ -15,7 +15,7 @@ from env import ENVIRONMENT
 Base.metadata.create_all(bind=engine)
 app = FastAPI(docs_url="/api/docs", redoc_url="/api/redoc")
 
-origins = ["127.0.0.1"]
+origins = ["http://127.0.0.1:3000", "http://localhost:3000"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
