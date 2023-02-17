@@ -9,6 +9,5 @@ async def create_objective(
     objective = objective_schema.make_objective(user_id)
     db.add(objective)
     db.commit()
-    db.flush(objective)
 
     return objective.id

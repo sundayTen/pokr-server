@@ -7,6 +7,5 @@ async def create_review(user_id: int, review_schema: ReviewSchema, db: Session) 
     review = review_schema.make_review(user_id)
     db.add(review)
     db.commit()
-    db.flush(review)
 
     return review.id
