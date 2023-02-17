@@ -22,4 +22,5 @@ class KeyResultCreateRequest(BaseModel):
             open_date=self.open_date,
             due_date=self.due_date,
             achievement_score=achievement_score,
+            tags=self.tags,
         )

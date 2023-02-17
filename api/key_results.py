@@ -18,9 +18,5 @@ async def create_my_key_result(
     user: User = Depends(check_user),
 ) -> int:
     validate_id_in_objects(user.objectives, key_result_request.objective_id)
-    key_result: int = await create_key_result(
-        key_result_request.make_key_result_schema(), db
-    )
-    # await create_tags(...) TODO
 
-    return key_result
+    return await create_key_result(key_result_request.make_key_result_schema(), db)
