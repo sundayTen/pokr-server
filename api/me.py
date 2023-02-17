@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from api.me.metrics.api import router as metrics_router
+from api.me_api.metrics import router as metrics_router
 from db.config import get_db
 from db.models.user import User
 from jwt import check_user
