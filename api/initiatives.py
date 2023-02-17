@@ -11,10 +11,10 @@ router = APIRouter()
 @router.post(
     "/done/{initiative_id}",
     description="Initiative 완료",
-    response_model=int,
+    response_model=None,
     status_code=201,
 )
 async def initiative_done(
     initiative_id: int, db: Session = Depends(get_db), user: User = Depends(check_user)
-) -> int:
-    return initiative_id
+) -> None:
+    return
