@@ -8,12 +8,7 @@ from jwt import check_user
 router = APIRouter()
 
 
-@router.post(
-    "/done/{initiative_id}",
-    description="Initiative 완료",
-    response_model=None,
-    status_code=201,
-)
+@router.post("/done/{initiative_id}", description="주요 행동 완료", response_model=None)
 async def initiative_done(
     initiative_id: int, db: Session = Depends(get_db), user: User = Depends(check_user)
 ) -> None:
