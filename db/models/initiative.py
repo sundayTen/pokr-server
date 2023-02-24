@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
 from db.config import Base
@@ -15,8 +15,9 @@ class Initiative(Base, DateBase):
     )
     title = Column(String(300), nullable=False)
     description = Column(Text)
-    priority = Column(Integer, nullable=False)
-    metrics_info = Column(String(30))
+    open_date = Column(Date, nullable=False)
+    due_date = Column(Date, nullable=False)
+    priority = Column(String(10), nullable=False)
     goal_metrics = Column(Integer, nullable=False)
     current_metrics = Column(Integer, nullable=False)
 
