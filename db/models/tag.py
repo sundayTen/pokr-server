@@ -8,7 +8,7 @@ class Tag(Base, DateBase):
     __tablename__ = "tag"
 
     id = Column(Integer, primary_key=True)
-    key_result_id = Column(
-        Integer, ForeignKey("key_result.id", ondelete="CASCADE"), nullable=False
+    objective_id = Column(
+        Integer, ForeignKey("objective.id", ondelete="CASCADE"), nullable=False
     )
     tag = Column(String(300), nullable=False, index=True)

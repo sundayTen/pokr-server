@@ -1,5 +1,4 @@
 from datetime import date
-from typing import List
 
 from pydantic import BaseModel
 
@@ -12,7 +11,6 @@ class KeyResultCreateRequest(BaseModel):
     description: str | None
     open_date: date
     due_date: date
-    tags: List[str]
 
     def make_key_result_schema(self, achievement_score: int = 0):
         return KeyResultSchema(
@@ -22,5 +20,4 @@ class KeyResultCreateRequest(BaseModel):
             open_date=self.open_date,
             due_date=self.due_date,
             achievement_score=achievement_score,
-            tags=self.tags,
         )

@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship
 from db.config import Base
 from db.models.common import DateBase
 from db.models.initiative import Initiative
-from db.models.tag import Tag
 
 
 class KeyResult(Base, DateBase):
@@ -20,7 +19,6 @@ class KeyResult(Base, DateBase):
     due_date = Column(Date, nullable=False)
     achievement_score = Column(Integer, nullable=False)
 
-    tags = relationship(Tag.__name__, backref="key_result", passive_deletes=True)
     initiatives = relationship(
         Initiative.__name__, backref="key_result", passive_deletes=True
     )
