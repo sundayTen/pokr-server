@@ -17,7 +17,6 @@ class Initiative(Base, DateBase):
     description = Column(Text)
     open_date = Column(Date, nullable=False)
     due_date = Column(Date, nullable=False)
-    priority = Column(String(10), nullable=False)
     goal_metrics = Column(Integer, nullable=False)
     current_metrics = Column(Integer, nullable=False)
 

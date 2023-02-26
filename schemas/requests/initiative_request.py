@@ -2,7 +2,6 @@ from datetime import date
 
 from pydantic import BaseModel
 
-from schemas.enums import Priority
 from schemas.initiative import InitiativeSchema
 
 
@@ -13,7 +12,6 @@ class InitiativeCreateRequest(BaseModel):
     open_date: date
     due_date: date
     goal_metrics: int
-    priority: Priority
 
     def make_initiative_schema(self, current_metrics: int = 0):
         return InitiativeSchema(
@@ -22,7 +20,6 @@ class InitiativeCreateRequest(BaseModel):
             description=self.description,
             open_date=self.open_date,
             due_date=self.due_date,
-            priority=self.priority,
             goal_metrics=self.goal_metrics,
             current_metrics=current_metrics,
         )
