@@ -1,9 +1,9 @@
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 from db.models.review import Review
 
 
-class ReviewSchema(BaseModel):
+class ReviewSchema(CamelModel):
     year: int
     quarter: int
     title: str

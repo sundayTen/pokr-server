@@ -1,13 +1,13 @@
 from typing import List
 
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 from db.models.objective import Objective
 from db.models.tag import Tag
 from schemas.key_result import KeyResultWithInitiativesSchema
 
 
-class ObjectiveSchema(BaseModel):
+class ObjectiveSchema(CamelModel):
     title: str
     year: int
     achievement: bool

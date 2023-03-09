@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 
-class ReviewResponse(BaseModel):
+class ReviewResponse(CamelModel):
     id: int
     year: int
     quarter: int

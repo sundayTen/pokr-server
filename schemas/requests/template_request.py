@@ -1,9 +1,9 @@
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 
-class TemplateCreateRequest(BaseModel):
+class TemplateCreateRequest(CamelModel):
     snapshot: dict
 
 
-class TemplateUpdateRequest(BaseModel):
+class TemplateUpdateRequest(CamelModel):
     snapshot: dict

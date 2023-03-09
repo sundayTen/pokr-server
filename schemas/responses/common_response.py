@@ -1,5 +1,5 @@
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 
-class IdResponse(BaseModel):
+class IdResponse(CamelModel):
     id: int

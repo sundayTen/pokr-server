@@ -1,11 +1,11 @@
 from typing import List
 
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 from schemas.objective import ObjectiveSchema
 
 
-class ObjectiveCreateRequest(BaseModel):
+class ObjectiveCreateRequest(CamelModel):
     title: str
     year: int
     tags: List[str]

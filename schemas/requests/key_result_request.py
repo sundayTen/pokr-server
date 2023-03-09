@@ -1,11 +1,11 @@
 from datetime import date
 
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 from schemas.key_result import KeyResultSchema
 
 
-class KeyResultCreateRequest(BaseModel):
+class KeyResultCreateRequest(CamelModel):
     objective_id: int
     title: str
     description: str | None

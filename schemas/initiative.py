@@ -1,11 +1,11 @@
 from datetime import date
 
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 from db.models.initiative import Initiative
 
 
-class InitiativeSchema(BaseModel):
+class InitiativeSchema(CamelModel):
     key_result_id: int
     title: str
     description: str | None

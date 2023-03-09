@@ -1,13 +1,13 @@
 from datetime import date
 from typing import List
 
-from pydantic import BaseModel
+from fastapi_camelcase import CamelModel
 
 from db.models.key_result import KeyResult
 from schemas.initiative import InitiativeSchema
 
 
-class KeyResultSchema(BaseModel):
+class KeyResultSchema(CamelModel):
     objective_id: int
     title: str
     description: str
