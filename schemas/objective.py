@@ -3,7 +3,6 @@ from typing import List
 from fastapi_camelcase import CamelModel
 
 from db.models.objective import Objective
-from db.models.tag import Tag
 from schemas.key_result import KeyResultWithInitiativesSchema
 
 
@@ -11,7 +10,6 @@ class ObjectiveSchema(CamelModel):
     title: str
     year: int
     achievement: bool
-    tags: List[str]
 
     def make_objective(self, user_id: int) -> Objective:
         return Objective(
@@ -19,7 +17,6 @@ class ObjectiveSchema(CamelModel):
             title=self.title,
             year=self.year,
             achievement=self.achievement,
-            tags=[Tag(tag=tag) for tag in self.tags],
         )
 
 
