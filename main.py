@@ -2,14 +2,11 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.auth import router as auth_router
 from api.index import router as index_router
 from api.initiatives import router as initiative_router
 from api.key_results import router as key_result_router
 from api.me import router as me_router
 from api.objectives import router as objective_router
-from api.reviews import router as review_router
-from api.templates import router as template_router
 from db.config import Base, engine
 from env import ENVIRONMENT
 
@@ -26,13 +23,13 @@ app.add_middleware(
 )
 
 app.include_router(index_router, tags=["INDEX"], prefix="/api")
-app.include_router(auth_router, tags=["AUTH"], prefix="/api/auth")
+# app.include_router(auth_router, tags=["AUTH"], prefix="/api/auth")
 app.include_router(initiative_router, tags=["INITIATIVE"], prefix="/api/initiatives")
 app.include_router(key_result_router, tags=["KEY_RESULT"], prefix="/api/key-results")
 app.include_router(me_router, tags=["ME"], prefix="/api/me_api")
 app.include_router(objective_router, tags=["OBJECTIVE"], prefix="/api/objectives")
-app.include_router(review_router, tags=["REVIEW"], prefix="/api/reviews")
-app.include_router(template_router, tags=["TEMPLATE"], prefix="/api/templates")
+# app.include_router(review_router, tags=["REVIEW"], prefix="/api/reviews")
+# app.include_router(template_router, tags=["TEMPLATE"], prefix="/api/templates")
 
 if __name__ == "__main__":
     if ENVIRONMENT == "local":
