@@ -14,7 +14,7 @@ from validation.common import validate_id_in_objects
 router = APIRouter()
 
 
-@router.post("", description="핵심 지표 만들기", response_model=int, status_code=201)
+@router.post("", description="핵심 지표 만들기", status_code=201)
 async def create_my_key_result(
     key_result_request: KeyResultCreateRequest,
     db: Session = Depends(get_db),

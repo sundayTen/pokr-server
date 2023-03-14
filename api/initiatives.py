@@ -18,7 +18,7 @@ router = APIRouter()
 
 
 # TODO done 과 initiative_id 위치 바꾸기
-@router.post("/done/{initiative_id}", description="주요 행동 완료", response_model=None)
+@router.post("/done/{initiative_id}", description="주요 행동 완료")
 async def initiative_done(
     initiative_id: int,
     count: int = 1,
@@ -33,7 +33,7 @@ async def initiative_done(
     await done_initiative(initiative_id, db, count)
 
 
-@router.post("", description="주요 행동 만들기", response_model=int, status_code=201)
+@router.post("", description="주요 행동 만들기", status_code=201)
 async def create_my_initiative(
     initiative_request: InitiativeCreateRequest,
     db: Session = Depends(get_db),
@@ -47,7 +47,7 @@ async def create_my_initiative(
     return await create_initiative(initiative_request.make_initiative_schema(), db)
 
 
-@router.delete("", description="주요 행동 삭제", response_model=None)
+@router.delete("", description="주요 행동 삭제")
 async def delete_my_initiative(
     initiative_id: int,
     db: Session = Depends(get_db),

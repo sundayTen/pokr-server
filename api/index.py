@@ -15,17 +15,15 @@ async def health_check() -> str:
     return "green"
 
 
-@router.post(
-    "/token", description="OAuth2 docs Authenticate Logic", response_model=Token
-)
-async def login_for_access_token(data: OAuth2PasswordRequestForm = Depends()):
+@router.post("/token", description="OAuth2 docs Authenticate Logic")
+async def login_for_access_token(data: OAuth2PasswordRequestForm = Depends()) -> Token:
     if data.username != ADMIN_USER:
         raise CREDENTIALS_EXCEPTION
 
     return Token(access_token=data.password, token_type="bearer")
 
 
-@router.get("/get-dummy-user", description="JWT 더미 유저 생성", response_model=Token)
+@router.get("/get-dummy-user", description="JWT 더미 유저 생성")
 async def get_dummy_user() -> Token:
     access_token: str = await create_access_token(User(id=1), 365)
     return Token(access_token=access_token, token_type="bearer")
