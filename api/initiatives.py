@@ -47,7 +47,7 @@ async def create_my_initiative(
     return await create_initiative(initiative_request.make_initiative_schema(), db)
 
 
-@router.delete("/{initiative_id}", description="주요 행동 삭제", response_model=None)
+@router.delete("/", description="주요 행동 삭제", response_model=None)
 async def delete_my_initiative(
     initiative_id: int,
     db: Session = Depends(get_db),
