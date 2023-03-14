@@ -10,7 +10,7 @@ from schemas.requests.objective_request import ObjectiveCreateRequest
 router = APIRouter()
 
 
-@router.post("/", description="목표 만들기", response_model=int, status_code=201)
+@router.post("", description="목표 만들기", response_model=int, status_code=201)
 async def create_my_goal(
     objective_request: ObjectiveCreateRequest,
     db: Session = Depends(get_db),
