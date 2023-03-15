@@ -26,7 +26,7 @@ async def create_my_key_result(
 
 
 @router.delete("", description="핵심 지표 삭제")
-async def create_my_key_result(
+async def delete_my_key_result(
     key_result_id: int,
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
