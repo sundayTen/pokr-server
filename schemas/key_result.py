@@ -8,6 +8,7 @@ from schemas.initiative import InitiativeSchema
 
 
 class KeyResultSchema(CamelModel):
+    id: int | None
     objective_id: int
     title: str
     description: str
@@ -31,6 +32,7 @@ class KeyResultWithInitiativesSchema(KeyResultSchema):
 
     def __init__(self, key_result: KeyResult) -> None:
         super().__init__(
+            id=key_result.id,
             objective_id=key_result.objective_id,
             title=key_result.title,
             description=key_result.description,
@@ -39,6 +41,7 @@ class KeyResultWithInitiativesSchema(KeyResultSchema):
             achievement_score=key_result.achievement_score,
             initiatives=[
                 InitiativeSchema(
+                    id=initiative.id,
                     key_result_id=initiative.key_result_id,
                     title=initiative.title,
                     description=initiative.description,

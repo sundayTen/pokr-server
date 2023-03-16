@@ -6,6 +6,7 @@ from db.models.initiative import Initiative
 
 
 class InitiativeSchema(CamelModel):
+    id: int | None
     key_result_id: int
     title: str
     description: str | None

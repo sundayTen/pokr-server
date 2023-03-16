@@ -7,6 +7,7 @@ from schemas.key_result import KeyResultWithInitiativesSchema
 
 
 class ObjectiveSchema(CamelModel):
+    id: int | None
     title: str
     year: int
     achievement: bool
@@ -25,6 +26,7 @@ class ObjectiveWithKeyResultsSchema(ObjectiveSchema):
 
     def __init__(self, objective: Objective):
         super().__init__(
+            id=objective.id,
             title=objective.title,
             year=objective.year,
             achievement=objective.achievement,
