@@ -17,7 +17,7 @@ router = APIRouter()
 
 
 @router.get("/{objective_id}", description="목표 상세 정보")
-async def create_my_goal(
+async def get_my_goal(
     objective_id: int,
     user: User = Depends(check_user),
 ) -> ObjectiveResponse:
