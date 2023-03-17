@@ -20,4 +20,4 @@ router.routes.extend(metrics_router.routes)
 async def get_my_okr(
     user: User = Depends(check_user),
 ) -> List[ObjectiveWithKeyResultsSchema]:
-    return make_okr_response(user.objectives)
+    return await make_okr_response(user.objectives)
