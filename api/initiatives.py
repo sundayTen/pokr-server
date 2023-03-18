@@ -47,6 +47,24 @@ async def create_my_initiative(
     return await create_initiative(initiative_request.make_initiative_schema(), db)
 
 
+# TODO update logic
+# @router.patch("/{initiative_id}", description="주요 행동 업데이트")
+# async def update_my_initiative(
+#     initiative_id: int,
+#     initiative_request: InitiativeUpdateRequest,
+#     db: Session = Depends(get_db),
+#     user: User = Depends(check_user),
+# ) -> None:
+#     user_initiatives: List[Initiative] = [
+#         kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
+#     ]
+#     validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
+#
+#     await update_initiative(
+#         initiative_id, initiative_request.make_initiative_nullable_schema(), db
+#     )
+
+
 @router.delete("", description="주요 행동 삭제")
 async def delete_my_initiative(
     initiative_id: int,
