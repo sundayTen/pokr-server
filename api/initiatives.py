@@ -22,7 +22,7 @@ router = APIRouter()
 
 # TODO done 과 initiative_id 위치 바꾸기
 @router.post("/done/{initiative_id}", description="주요 행동 완료")
-async def initiative_done(
+async def check_done_initiative(
     initiative_id: int,
     count: int = 1,
     db: Session = Depends(get_db),
