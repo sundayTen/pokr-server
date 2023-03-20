@@ -39,7 +39,7 @@ async def create_my_goal(
     )
 
 
-@router.delete("", description="목표 삭제")
+@router.delete("/{objective_id}", description="목표 삭제")
 async def delete_my_goal(
     objective_id: int,
     db: Session = Depends(get_db),

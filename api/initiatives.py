@@ -20,22 +20,6 @@ from validation.common import validate_id_in_objects
 router = APIRouter()
 
 
-# TODO done 과 initiative_id 위치 바꾸기
-@router.post("/done/{initiative_id}", description="주요 행동 완료")
-async def check_done_initiative(
-    initiative_id: int,
-    count: int = 1,
-    db: Session = Depends(get_db),
-    user: User = Depends(check_user),
-) -> None:
-    user_initiatives: List[Initiative] = [
-        kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
-    ]
-    validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
-
-    await done_initiative(initiative_id, db, count)
-
-
 @router.post("", description="주요 행동 만들기", status_code=201)
 async def create_my_initiative(
     initiative_request: InitiativeCreateRequest,
@@ -48,6 +32,20 @@ async def create_my_initiative(
     )
 
     return await create_initiative(initiative_request.make_initiative_schema(), db)
+
+
+@router.delete("/{initiative_id}", description="주요 행동 삭제")
+async def delete_my_initiative(
+    initiative_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(check_user),
+) -> None:
+    user_initiatives: List[Initiative] = [
+        kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
+    ]
+    validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
+
+    await delete_initiative(initiative_id, db)
 
 
 @router.patch("/{initiative_id}", description="주요 행동 수정")
@@ -67,9 +65,11 @@ async def update_my_initiative(
     )
 
 
-@router.delete("", description="주요 행동 삭제")
-async def delete_my_initiative(
+# TODO done 과 initiative_id 위치 바꾸기
+@router.post("/done/{initiative_id}", description="주요 행동 완료")
+async def check_done_initiative(
     initiative_id: int,
+    count: int = 1,
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
@@ -78,4 +78,4 @@ async def delete_my_initiative(
     ]
     validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
 
-    await delete_initiative(initiative_id, db)
+    await done_initiative(initiative_id, db, count)

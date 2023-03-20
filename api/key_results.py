@@ -25,7 +25,7 @@ async def create_my_key_result(
     return await create_key_result(key_result_request.make_key_result_schema(), db)
 
 
-@router.delete("", description="핵심 지표 삭제")
+@router.delete("/{key_result_id}", description="핵심 지표 삭제")
 async def delete_my_key_result(
     key_result_id: int,
     db: Session = Depends(get_db),
