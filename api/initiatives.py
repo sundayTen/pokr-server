@@ -1,7 +1,7 @@
 from itertools import chain
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from crud.initiative.create import create_initiative
@@ -15,9 +15,30 @@ from schemas.requests.initiative_request import (
     InitiativeCreateRequest,
     InitiativeUpdateRequest,
 )
+from schemas.responses.initiative_response import (
+    make_initiative_response,
+    InitiativeResponse,
+)
 from validation.common import validate_id_in_objects
 
 router = APIRouter()
+
+
+@router.get("/{initiative_id}", description="주요 행동 상세 정보")
+async def get_my_initiative(
+    initiative_id: int,
+    user: User = Depends(check_user),
+) -> InitiativeResponse:
+    user_initiatives: List[List[Initiative]] = [
+        kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
+    ]
+    initiatives = list(
+        filter(lambda x: x.id == initiative_id, chain(*user_initiatives))
+    )
+    if not initiatives:
+        raise HTTPException(status_code=404, detail="Wrong Initiative Id")
+
+    return await make_initiative_response(initiatives[0])
 
 
 @router.post("", description="주요 행동 만들기", status_code=201)
@@ -40,7 +61,7 @@ async def delete_my_initiative(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
-    user_initiatives: List[Initiative] = [
+    user_initiatives: List[List[Initiative]] = [
         kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
     ]
     validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
@@ -55,7 +76,7 @@ async def update_my_initiative(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
-    user_initiatives: List[Initiative] = [
+    user_initiatives: List[List[Initiative]] = [
         kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
     ]
     validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
@@ -73,7 +94,7 @@ async def check_done_initiative(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
-    user_initiatives: List[Initiative] = [
+    user_initiatives: List[List[Initiative]] = [
         kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
     ]
     validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
