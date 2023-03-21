@@ -28,7 +28,7 @@ class OkrInitiativeResponse(CamelModel):
 class OkrKeyResultResponse(CamelModel):
     id: int
     title: str
-    description: str
+    description: str | None
     open_date: date
     due_date: date
     achievement_score: int
