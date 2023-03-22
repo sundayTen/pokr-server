@@ -21,3 +21,11 @@ class KeyResultCreateRequest(CamelModel):
             due_date=self.due_date,
             achievement_score=achievement_score,
         )
+
+
+class KeyResultUpdateRequest(CamelModel):
+    title: str | None
+    description: str | None
+    open_date: date | None
+    due_date: date | None
+    achievement_score: int | None
