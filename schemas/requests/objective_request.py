@@ -11,3 +11,9 @@ class ObjectiveCreateRequest(CamelModel):
         return ObjectiveSchema(
             title=self.title, year=self.year, achievement=achievement
         )
+
+
+class ObjectiveUpdateRequest(CamelModel):
+    title: str | None
+    year: int | None
+    achievement: bool | None  # 이거 비교는 기존 것과 같은 지를 확인.

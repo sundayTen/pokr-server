@@ -6,7 +6,10 @@ from crud.objective.delete import delete_objective
 from db.config import get_db
 from db.models.user import User
 from jwt import check_user
-from schemas.requests.objective_request import ObjectiveCreateRequest
+from schemas.requests.objective_request import (
+    ObjectiveCreateRequest,
+    ObjectiveUpdateRequest,
+)
 from schemas.responses.objective_response import (
     ObjectiveResponse,
     make_objective_response,
@@ -48,3 +51,15 @@ async def delete_my_goal(
     validate_id_in_objects(user.objectives, objective_id)
 
     await delete_objective(objective_id, db)
+
+
+@router.patch("/{objective_id}", description="목표 수정")
+async def update_my_goal(
+    objective_id: int,
+    objective_request: ObjectiveUpdateRequest,
+    db: Session = Depends(get_db),
+    user: User = Depends(check_user),
+) -> None:
+    validate_id_in_objects(user.objectives, objective_id)
+
+    # TODO 업데이트 로직
