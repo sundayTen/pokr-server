@@ -2,7 +2,7 @@ from datetime import date
 
 from fastapi_camelcase import CamelModel
 
-from schemas.key_result import KeyResultSchema
+from schemas.key_result import KeyResultSchema, KeyResultNullableSchema
 
 
 class KeyResultCreateRequest(CamelModel):
@@ -29,3 +29,12 @@ class KeyResultUpdateRequest(CamelModel):
     open_date: date | None
     due_date: date | None
     achievement_score: int | None
+
+    def make_key_result_nullable_schema(self):
+        return KeyResultNullableSchema(
+            title=self.title,
+            description=self.description,
+            open_date=self.open_date,
+            due_date=self.due_date,
+            achievement_score=self.achievement_score,
+        )

@@ -53,3 +53,28 @@ class KeyResultWithInitiativesSchema(KeyResultSchema):
                 for initiative in key_result.initiatives
             ],
         )
+
+
+class KeyResultNullableSchema(CamelModel):
+    id: int | None
+    objective_id: int | None
+    title: str | None
+    description: str | None
+    open_date: date | None
+    due_date: date | None
+    achievement_score: int | None
+
+    async def update_key_result(self, key_result: KeyResult):
+        key_result.title = self.title if self.title else key_result.title
+        key_result.description = (
+            self.description if self.description else key_result.description
+        )
+        key_result.open_date = (
+            self.open_date if self.open_date else key_result.open_date
+        )
+        key_result.due_date = self.due_date if self.due_date else key_result.due_date
+        key_result.achievement_score = (
+            self.achievement_score
+            if self.achievement_score
+            else key_result.achievement_score
+        )
