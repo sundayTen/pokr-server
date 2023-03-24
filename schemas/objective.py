@@ -36,3 +36,19 @@ class ObjectiveWithKeyResultsSchema(ObjectiveSchema):
                 for key_result in objective.key_results
             ],
         )
+
+
+class ObjectiveNullableSchema(CamelModel):
+    id: int | None
+    title: str | None
+    year: int | None
+    achievement: bool | None
+
+    def update_objective(self, objective: Objective):
+        objective.title = self.title if self.title else objective.title
+        objective.year = self.year if self.year else objective.year
+        objective.achievement = (
+            self.achievement
+            if self.achievement != objective.achievement
+            else objective.achievement
+        )

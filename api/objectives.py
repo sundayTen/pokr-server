@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from crud.objective.create import create_objective
 from crud.objective.delete import delete_objective
+from crud.objective.update import update_objective
 from db.config import get_db
 from db.models.user import User
 from jwt import check_user
@@ -62,4 +63,6 @@ async def update_my_goal(
 ) -> None:
     validate_id_in_objects(user.objectives, objective_id)
 
-    # TODO 업데이트 로직
+    await update_objective(
+        objective_id, objective_request.make_objective_nullable_schema(), db
+    )

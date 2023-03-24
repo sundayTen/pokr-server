@@ -1,6 +1,6 @@
 from fastapi_camelcase import CamelModel
 
-from schemas.objective import ObjectiveSchema
+from schemas.objective import ObjectiveSchema, ObjectiveNullableSchema
 
 
 class ObjectiveCreateRequest(CamelModel):
@@ -16,4 +16,11 @@ class ObjectiveCreateRequest(CamelModel):
 class ObjectiveUpdateRequest(CamelModel):
     title: str | None
     year: int | None
-    achievement: bool | None  # 이거 비교는 기존 것과 같은 지를 확인.
+    achievement: bool | None
+
+    def make_objective_nullable_schema(self):
+        return ObjectiveNullableSchema(
+            title=self.title,
+            year=self.year,
+            achievement=self.achievement,
+        )
