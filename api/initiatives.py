@@ -86,8 +86,7 @@ async def update_my_initiative(
     )
 
 
-# TODO done 과 initiative_id 위치 바꾸기
-@router.post("/done/{initiative_id}", description="주요 행동 완료")
+@router.post("/{initiative_id}/done", description="주요 행동 완료")
 async def check_done_initiative(
     initiative_id: int,
     count: int = 1,
