@@ -10,9 +10,7 @@ from jwt import check_user
 router = APIRouter()
 
 
-@router.get(
-    "/metrics/graph/half/{num}", description="나의 달성 수치[월별]", response_model=List[dict]
-)
+@router.get("/graph/half/{num}", description="나의 달성 수치[월별]", response_model=List[dict])
 async def get_my_monthly_metrics(
     num: int = Path(..., ge=1, le=2),
     db: Session = Depends(get_db),
@@ -39,7 +37,7 @@ async def get_my_monthly_metrics(
 
 
 @router.get(
-    "/metrics/graph/quarter/{num}",
+    "/graph/quarter/{num}",
     description="나의 달성 수치[주별]",
     response_model=List[dict],
 )
@@ -118,7 +116,7 @@ async def get_my_weekly_metrics(
         ]
 
 
-@router.get("/metrics/objectives", description="나의 목표", response_model=List[dict])
+@router.get("/objectives", description="나의 목표", response_model=List[dict])
 async def get_my_objectives(
     db: Session = Depends(get_db), user: User = Depends(check_user)
 ) -> List[dict]:
