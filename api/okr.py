@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from fastapi import APIRouter, Depends
@@ -19,3 +20,13 @@ async def get_my_okr(
     user: User = Depends(check_user),
 ) -> List[ObjectiveWithKeyResultsSchema]:
     return await make_okr_response(user.objectives)
+
+
+@router.get(
+    "/years",
+    description="가입 해부터 현재 해까지 반환",
+)
+async def get_my_okr(
+    user: User = Depends(check_user),
+) -> List[int]:
+    return list(range(int(user.created_at.year), int(datetime.now().year) + 1))
