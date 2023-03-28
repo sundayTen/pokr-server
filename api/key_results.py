@@ -13,6 +13,7 @@ from schemas.requests.key_result_request import (
     KeyResultCreateRequest,
     KeyResultUpdateRequest,
 )
+from schemas.responses.common_response import IdResponse
 from schemas.responses.key_result_response import (
     KeyResultResponse,
     make_key_result_response,
@@ -44,10 +45,12 @@ async def create_my_key_result(
     key_result_request: KeyResultCreateRequest,
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
-) -> int:
+) -> IdResponse:
     validate_id_in_objects(user.objectives, key_result_request.objective_id)
 
-    return await create_key_result(key_result_request.make_key_result_schema(), db)
+    return IdResponse(
+        id=await create_key_result(key_result_request.make_key_result_schema(), db)
+    )
 
 
 @router.delete("/{key_result_id}", description="핵심 지표 삭제")

@@ -11,6 +11,7 @@ from schemas.requests.objective_request import (
     ObjectiveCreateRequest,
     ObjectiveUpdateRequest,
 )
+from schemas.responses.common_response import IdResponse
 from schemas.responses.objective_response import (
     ObjectiveResponse,
     make_objective_response,
@@ -37,9 +38,11 @@ async def create_my_goal(
     objective_request: ObjectiveCreateRequest,
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
-) -> int:
-    return await create_objective(
-        user.id, objective_request.make_objective_schema(), db
+) -> IdResponse:
+    return IdResponse(
+        id=await create_objective(
+            user.id, objective_request.make_objective_schema(), db
+        )
     )
 
 

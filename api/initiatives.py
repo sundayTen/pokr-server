@@ -15,6 +15,7 @@ from schemas.requests.initiative_request import (
     InitiativeCreateRequest,
     InitiativeUpdateRequest,
 )
+from schemas.responses.common_response import IdResponse
 from schemas.responses.initiative_response import (
     make_initiative_response,
     InitiativeResponse,
@@ -46,13 +47,15 @@ async def create_my_initiative(
     initiative_request: InitiativeCreateRequest,
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
-) -> int:
+) -> IdResponse:
     validate_id_in_objects(
         list(chain(*[obj.key_results for obj in user.objectives])),
         initiative_request.key_result_id,
     )
 
-    return await create_initiative(initiative_request.make_initiative_schema(), db)
+    return IdResponse(
+        id=await create_initiative(initiative_request.make_initiative_schema(), db)
+    )
 
 
 @router.delete("/{initiative_id}", description="주요 행동 삭제")
