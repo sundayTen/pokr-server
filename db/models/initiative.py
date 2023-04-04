@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Date, JSON
 from sqlalchemy.orm import relationship
 
 from db.config import Base
@@ -19,5 +19,6 @@ class Initiative(Base, DateBase):
     due_date = Column(Date, nullable=False)
     goal_metrics = Column(Integer, nullable=False)
     current_metrics = Column(Integer, nullable=False)
+    done_times = Column(JSON)
 
     memos = relationship(Memo.__name__, backref="initiative", passive_deletes=True)

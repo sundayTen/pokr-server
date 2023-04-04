@@ -1,12 +1,15 @@
 from sqlalchemy.orm import Session
 
 from db.models.initiative import Initiative
-from schemas.initiative import InitiativeNullableSchema
+from schemas.initiative import InitiativeNullableSchema, update_done_times
 
 
 async def done_initiative(initiative_id: int, db: Session, count: int) -> None:
     initiative = db.query(Initiative).get(initiative_id)
     initiative.current_metrics += count
+    initiative.done_times = await update_done_times(
+        initiative, initiative.current_metrics
+    )
     db.commit()
 
 

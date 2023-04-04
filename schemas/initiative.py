@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from fastapi_camelcase import CamelModel
 
@@ -49,6 +49,25 @@ class InitiativeNullableSchema(CamelModel):
         initiative.goal_metrics = (
             self.goal_metrics if self.goal_metrics else initiative.goal_metrics
         )
-        initiative.current_metrics = (
-            self.current_metrics if self.current_metrics else initiative.current_metrics
-        )
+        if self.current_metrics is not None:
+            initiative.current_metrics = self.current_metrics
+            initiative.done_times = await update_done_times(
+                initiative, self.current_metrics
+            )
+
+
+async def update_done_times(initiative: Initiative, current_metrics: int) -> dict:
+    new_done_times = dict()
+
+    if initiative.done_times:
+        for i in range(1, current_metrics + 1):
+            new_done_times[i] = (
+                initiative.done_times[str(i)]
+                if initiative.done_times.get(str(i))
+                else str(datetime.now())
+            )
+    else:
+        for i in range(1, current_metrics + 1):
+            new_done_times[i] = str(datetime.now())
+
+    return new_done_times
