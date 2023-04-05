@@ -8,7 +8,6 @@ from db.models.initiative import Initiative
 
 class KeyResult(Base, DateBase):
     __tablename__ = "key_result"
-    __table_args__ = {"extend_existing": True}
 
     id = Column(Integer, primary_key=True)
     objective_id = Column(
