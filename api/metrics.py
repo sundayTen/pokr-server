@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from db.config import get_db
 from db.models.user import User
 from jwt import check_user
+from service.metrics import get_objective_achievement_percent
 
 router = APIRouter()
 
@@ -116,30 +117,9 @@ async def get_my_weekly_metrics(
         ]
 
 
-@router.get("/objectives", description="나의 목표", response_model=List[dict])
-async def get_my_objectives(
-    db: Session = Depends(get_db), user: User = Depends(check_user)
-) -> List[dict]:
+@router.get("/objectives", description="나의 목표 달성 수치", response_model=List[dict])
+async def get_my_objectives(user: User = Depends(check_user)) -> List[dict]:
     return [
-        {
-            "objectiveId": 6,
-            "objectiveTitle": "POKR 프로젝트 출시하기",
-            "achievement": False,
-            "keyResultPercent": 56,
-            "initiativePercent": 77,
-        },
-        {
-            "objectiveId": 17,
-            "objectiveTitle": "바디프로필 찍기",
-            "achievement": False,
-            "keyResultPercent": 49,
-            "initiativePercent": 80,
-        },
-        {
-            "objectiveId": 63,
-            "objectiveTitle": "북극곰 수영대회 나가기",
-            "achievement": False,
-            "keyResultPercent": 36,
-            "initiativePercent": 40,
-        },
+        await get_objective_achievement_percent(objective)
+        for objective in user.objectives
     ]
