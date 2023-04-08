@@ -4,7 +4,12 @@ from functools import reduce
 from itertools import chain
 from typing import List
 
-from env import OBJECTIVE_WEIGHT, KEY_RESULT_WEIGHT, KEY_RESULT_MAX_SCORE
+from env import (
+    OBJECTIVE_WEIGHT,
+    KEY_RESULT_WEIGHT,
+    KEY_RESULT_MAX_SCORE,
+    INITIATIVE_WEIGHT,
+)
 from schemas.common import PeriodCategory
 from schemas.initiative import InitiativeSchema
 from schemas.key_result import KeyResultWithInitiativesSchema
@@ -41,21 +46,26 @@ async def get_objective_achievement_percent(
 
 
 async def calculate_achievement_percent(
-    objective: ObjectiveWithKeyResultsSchema, category: PeriodCategory
+    objectives: List[ObjectiveWithKeyResultsSchema], category: PeriodCategory
 ):
-    key_results = objective.key_results
-    initiatives = list(chain(*[key_result.initiatives for key_result in key_results]))
-    points_for_calculating_percent = [
-        await get_objective_achievement_percent(objective, category),
-        await get_key_results_achievement_percent(key_results, category),
-        await get_initiatives_achievement_percent(initiatives, category),
-    ]
+    point, total_point = 0, 0
+    for objective in objectives:
+        key_results = objective.key_results
+        initiatives = list(
+            chain(*[key_result.initiatives for key_result in key_results])
+        )
+        points_for_calculating_percent = [
+            await get_objective_achievement_percent(objective, category),
+            await get_key_results_achievement_percent(key_results, category),
+            await get_initiatives_achievement_percent(initiatives, category),
+        ]
 
-    return int(
-        sum([point[0] for point in points_for_calculating_percent])
-        / sum([point[1] for point in points_for_calculating_percent])
-        * 100
-    )
+        point += sum([points[0] for points in points_for_calculating_percent])
+        total_point += sum([points[1] for points in points_for_calculating_percent])
+
+    if total_point:
+        return int(point / total_point * 100)
+    return 0
 
 
 async def get_objective_achievement_percent(
@@ -65,7 +75,7 @@ async def get_objective_achievement_percent(
     if now.year - 1 != objective.year:
         return 0, 0
 
-    if category == PeriodCategory.QUARTER:
+    if category == PeriodCategory.WEEK:
         if now.month == 1 and now.day < 8 and objective.achievement:
             return OBJECTIVE_WEIGHT, OBJECTIVE_WEIGHT
     elif category == PeriodCategory.MONTH:
@@ -80,7 +90,7 @@ async def get_key_results_achievement_percent(
 ) -> (float, int):
     achievement_scores = []
     now = datetime.now()
-    if category == PeriodCategory.QUARTER:
+    if category == PeriodCategory.WEEK:
         current_time = time.mktime(now.date().timetuple())
         for key_result in key_results:
             due_time = time.mktime(key_result.due_date.timetuple())
@@ -99,7 +109,33 @@ async def get_key_results_achievement_percent(
     )
 
 
+# TODO 주요 행동 퍼센트 관련 작성 중
 async def get_initiatives_achievement_percent(
     initiatives: List[InitiativeSchema], category: PeriodCategory
 ) -> (float, int):
-    pass
+    achievement_scores = []
+    now = datetime.now()
+    if category == PeriodCategory.WEEK:
+        current_time = time.mktime(now.date().timetuple())
+        for initiative in initiatives:
+            open_time = time.mktime(initiative.open_date.timetuple())
+            due_time = time.mktime(initiative.due_date.timetuple())
+            last_done_date = initiative.done_times.get(str(initiative.current_metrics))
+            if open_time < current_time < due_time + 86400 * 8:
+                if not last_done_date:
+                    achievement_scores.append(0)
+                    continue
+                done_date = datetime.strptime(last_done_date, "%Y-%m-%d %H:%M:%S.%f")
+                if (
+                    current_time - 86400 * 7
+                    <= time.mktime(done_date.timetuple())
+                    < current_time
+                    or initiative.goal_metrics <= initiative.current_metrics
+                ):
+                    achievement_scores.append(INITIATIVE_WEIGHT)
+                else:
+                    achievement_scores.append(0)
+    elif category == PeriodCategory.MONTH:
+        pass
+
+    return sum(achievement_scores), len(achievement_scores)

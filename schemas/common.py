@@ -9,5 +9,5 @@ class Token(BaseModel):
 
 
 class PeriodCategory(Enum):
-    QUARTER = auto()
+    WEEK = auto()
     MONTH = auto()

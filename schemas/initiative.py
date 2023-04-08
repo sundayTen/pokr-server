@@ -14,6 +14,7 @@ class InitiativeSchema(CamelModel):
     due_date: date
     goal_metrics: int
     current_metrics: int
+    done_times: dict | None
 
     def make_initiative(self) -> Initiative:
         return Initiative(

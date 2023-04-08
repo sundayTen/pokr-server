@@ -49,6 +49,7 @@ class KeyResultWithInitiativesSchema(KeyResultSchema):
                     due_date=initiative.due_date,
                     goal_metrics=initiative.goal_metrics,
                     current_metrics=initiative.current_metrics,
+                    done_times=initiative.done_times,
                 )
                 for initiative in key_result.initiatives
             ],
