@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -19,6 +21,14 @@ from schemas.responses.objective_response import (
 from validation.common import validate_id_in_objects
 
 router = APIRouter()
+
+
+@router.get("/", description="년도별 나의 모든 목표 보기")
+async def get_my_goals(
+    year: int, user: User = Depends(check_user)
+) -> List[ObjectiveResponse]:
+    objectives = list(filter(lambda x: x.year == year, user.objectives))
+    return [await make_objective_response(objective) for objective in objectives]
 
 
 @router.get("/{objective_id}", description="목표 상세 정보")
