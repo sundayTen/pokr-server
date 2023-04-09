@@ -109,7 +109,6 @@ async def get_key_results_achievement_percent(
     )
 
 
-# TODO 주요 행동 퍼센트 관련 작성 중
 async def get_initiatives_achievement_percent(
     initiatives: List[InitiativeSchema], category: PeriodCategory
 ) -> (float, int):
@@ -136,6 +135,23 @@ async def get_initiatives_achievement_percent(
                 else:
                     achievement_scores.append(0)
     elif category == PeriodCategory.MONTH:
-        pass
+        current_month = now.year * 12 + now.month
+        for initiative in initiatives:
+            open_month = initiative.open_date.year * 12 + initiative.open_date.month
+            due_month = initiative.due_date.year * 12 + initiative.due_date.month
+            if open_month < current_month <= due_month + 1:
+                if not initiative.done_times:
+                    achievement_scores.append(0)
+                    continue
+                for str_done_time in initiative.done_times.values():
+                    done_time = datetime.strptime(str_done_time, "%Y-%m-%d %H:%M:%S.%f")
+                    if current_month - 1 == done_time.year * 12 + done_time.month:
+                        achievement_scores.append(INITIATIVE_WEIGHT)
+                        break
+                else:
+                    if initiative.goal_metrics <= initiative.current_metrics:
+                        achievement_scores.append(INITIATIVE_WEIGHT)
+                    else:
+                        achievement_scores.append(0)
 
     return sum(achievement_scores), len(achievement_scores)
