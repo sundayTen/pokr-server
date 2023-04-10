@@ -18,5 +18,5 @@ class Objective(Base, DateBase):
 
     tags = relationship(Tag.__name__, backref="objective", passive_deletes=True)
     key_results = relationship(
-        KeyResult.__name__, backref="objective", passive_deletes=True
+        KeyResult.__name__, backref="objective", passive_deletes=False
     )
