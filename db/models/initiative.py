@@ -21,4 +21,4 @@ class Initiative(Base, DateBase):
     current_metrics = Column(Integer, nullable=False)
     done_times = Column(JSON)
 
-    memos = relationship(Memo.__name__, backref="initiative", passive_deletes=True)
+    memos = relationship(Memo.__name__, backref="initiative", passive_deletes=False)

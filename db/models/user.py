@@ -20,9 +20,9 @@ class User(Base, DateBase):
     phone = Column(String(20), unique=True)
     achievement_percent = Column(JSON)
 
-    objectives = relationship(Objective.__name__, backref="user", passive_deletes=True)
-    templates = relationship(Template.__name__, backref="user", passive_deletes=True)
-    reviews = relationship(Review.__name__, backref="user", passive_deletes=True)
+    objectives = relationship(Objective.__name__, backref="user", passive_deletes=False)
+    templates = relationship(Template.__name__, backref="user", passive_deletes=False)
+    reviews = relationship(Review.__name__, backref="user", passive_deletes=False)
     achievement_percents = relationship(
-        AchievementPercent.__name__, backref="user", passive_deletes=True
+        AchievementPercent.__name__, backref="user", passive_deletes=False
     )

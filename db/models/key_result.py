@@ -20,5 +20,5 @@ class KeyResult(Base, DateBase):
     achievement_score = Column(Integer, nullable=False)
 
     initiatives = relationship(
-        Initiative.__name__, backref="key_result", passive_deletes=True
+        Initiative.__name__, backref="key_result", passive_deletes=False
     )
