@@ -8,7 +8,10 @@ from crud.achievement_percent.read import get_achievement_percent
 from db.config import get_db
 from db.models.user import User
 from jwt import check_user
-from schemas.responses.achievement_percent_response import AchievementPercentResponse
+from schemas.responses.achievement_percent_response import (
+    AchievementPercentResponse,
+    get_achievement_percent_response_by_label,
+)
 from service.metrics import (
     get_objective_achievement_percent,
 )
@@ -25,20 +28,9 @@ async def get_my_monthly_metrics(
     now = datetime.now()
     achievement_percents = await get_achievement_percent(now.year, None, db)
     achievement_percents_of_user = await get_achievement_percent(now.year, user.id, db)
-
-    achievement_percents_by_label = dict()
-    for achievement_percent in achievement_percents_of_user:
-        achievement_percents_by_label[
-            achievement_percent.label
-        ] = AchievementPercentResponse(
-            label=achievement_percent.label, me=achievement_percents_of_user, all=0
-        )
-
-    for achievement_percent in achievement_percents:
-        if achievement_percents_by_label.get(achievement_percent.label):
-            achievement_percents_by_label[
-                achievement_percent.label
-            ].all = achievement_percent.percent
+    achievement_percents_by_label = get_achievement_percent_response_by_label(
+        achievement_percents, achievement_percents_of_user
+    )
 
     my_achievement_percents = []
     if num == 1:
@@ -71,6 +63,14 @@ async def get_my_weekly_metrics(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> List[dict]:
+    now = datetime.now()
+    achievement_percents = await get_achievement_percent(now.year, None, db)
+    achievement_percents_of_user = await get_achievement_percent(now.year, user.id, db)
+    achievement_percents_by_label = get_achievement_percent_response_by_label(
+        achievement_percents, achievement_percents_of_user
+    )
+
+    my_achievement_percents = []
     if num == 1:
         return [
             {"label": "1월 1주차", "me": 14, "all": 20},
