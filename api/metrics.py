@@ -19,54 +19,45 @@ from service.metrics import (
 router = APIRouter()
 
 
-@router.get("/graph/half/{num}", description="나의 달성 수치[월별]", response_model=List[dict])
+@router.get("/graph/half/{num}", description="나의 달성 수치[월별]")
 async def get_my_monthly_metrics(
     num: int = Path(..., ge=1, le=2),
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
-) -> List[dict]:
+) -> List[AchievementPercentResponse]:
     now = datetime.now()
     achievement_percents = await get_achievement_percent(now.year, None, db)
     achievement_percents_of_user = await get_achievement_percent(now.year, user.id, db)
-    achievement_percents_by_label = get_achievement_percent_response_by_label(
+    achievement_percents_by_label = await get_achievement_percent_response_by_label(
         achievement_percents, achievement_percents_of_user
     )
 
-    my_achievement_percents = []
     if num == 1:
-        for label in [f"{i}월" for i in range(1, 7)]:
-            if achievement_percents_by_label.get(label):
-                my_achievement_percents.append(achievement_percents_by_label.get(label))
-            else:
-                my_achievement_percents.append(
-                    AchievementPercentResponse(label=label, me=0, all=0)
-                )
-    else:
-        for label in [f"{i}월" for i in range(7, 13)]:
-            if achievement_percents_by_label.get(label):
-                my_achievement_percents.append(achievement_percents_by_label.get(label))
-            else:
-                my_achievement_percents.append(
-                    AchievementPercentResponse(label=label, me=0, all=0)
-                )
+        return [
+            achievement_percents_by_label.get(label)
+            if achievement_percents_by_label.get(label)
+            else AchievementPercentResponse(label=label, me=0, all=0)
+            for label in [f"{i}월" for i in range(1, 7)]
+        ]
 
-    return my_achievement_percents
+    return [
+        achievement_percents_by_label.get(label)
+        if achievement_percents_by_label.get(label)
+        else AchievementPercentResponse(label=label, me=0, all=0)
+        for label in [f"{i}월" for i in range(7, 13)]
+    ]
 
 
-@router.get(
-    "/graph/quarter/{num}",
-    description="나의 달성 수치[주별]",
-    response_model=List[dict],
-)
+@router.get("/graph/quarter/{num}", description="나의 달성 수치[주별]")
 async def get_my_weekly_metrics(
     num: int = Path(..., ge=1, le=4),
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
-) -> List[dict]:
+) -> List[AchievementPercentResponse]:
     now = datetime.now()
     achievement_percents = await get_achievement_percent(now.year, None, db)
     achievement_percents_of_user = await get_achievement_percent(now.year, user.id, db)
-    achievement_percents_by_label = get_achievement_percent_response_by_label(
+    achievement_percents_by_label = await get_achievement_percent_response_by_label(
         achievement_percents, achievement_percents_of_user
     )
 
