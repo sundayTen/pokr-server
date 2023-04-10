@@ -11,4 +11,4 @@ class AchievementPercent(Base):
     year = Column(Integer, nullable=False)
     category = Column(String(20), nullable=False)
     label = Column(String(100), nullable=False)
-    percent_of_users = Column(Integer, nullable=False)
+    percent = Column(Integer, nullable=False)

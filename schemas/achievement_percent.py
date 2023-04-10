@@ -9,12 +9,12 @@ class AchievementPercentSchema(CamelModel):
     year: int
     category: PeriodCategory
     label: str
-    percent_of_users: int
+    percent: int
 
     async def make_achievement_percent(self):
         return AchievementPercent(
             year=self.year,
             category=self.category.name,
             label=self.label,
-            percent_of_users=self.percent_of_users,
+            percent=self.percent,
         )

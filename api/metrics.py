@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from fastapi import Depends, Path, APIRouter
@@ -8,7 +9,9 @@ from db.config import get_db
 from db.models.user import User
 from jwt import check_user
 from schemas.responses.achievement_percent_response import AchievementPercentResponse
-from service.metrics import get_objective_achievement_percent
+from service.metrics import (
+    get_objective_achievement_percent,
+)
 
 router = APIRouter()
 
@@ -19,29 +22,32 @@ async def get_my_monthly_metrics(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> List[dict]:
-    achievement_percents = await get_achievement_percent(2023, db)
-    my_achievement_percents = []
+    now = datetime.now()
+    achievement_percents = await get_achievement_percent(now.year, None, db)
+    achievement_percents_of_user = await get_achievement_percent(now.year, user.id, db)
+
     achievement_percents_by_label = dict()
-    for achievement_percent in achievement_percents:
+    for achievement_percent in achievement_percents_of_user:
         achievement_percents_by_label[
             achievement_percent.label
         ] = AchievementPercentResponse(
-            label=achievement_percent.label,
-            me=999,
-            all=achievement_percent.percent_of_users,
+            label=achievement_percent.label, me=achievement_percents_of_user, all=0
         )
 
+    for achievement_percent in achievement_percents:
+        if achievement_percents_by_label.get(achievement_percent.label):
+            achievement_percents_by_label[
+                achievement_percent.label
+            ].all = achievement_percent.percent
+
+    my_achievement_percents = []
     if num == 1:
         for label in [f"{i}월" for i in range(1, 7)]:
             if achievement_percents_by_label.get(label):
                 my_achievement_percents.append(achievement_percents_by_label.get(label))
             else:
                 my_achievement_percents.append(
-                    AchievementPercentResponse(
-                        label=label,
-                        me=99,
-                        all=0,
-                    )
+                    AchievementPercentResponse(label=label, me=0, all=0)
                 )
     else:
         for label in [f"{i}월" for i in range(7, 13)]:
@@ -49,11 +55,7 @@ async def get_my_monthly_metrics(
                 my_achievement_percents.append(achievement_percents_by_label.get(label))
             else:
                 my_achievement_percents.append(
-                    AchievementPercentResponse(
-                        label=label,
-                        me=99,
-                        all=0,
-                    )
+                    AchievementPercentResponse(label=label, me=0, all=0)
                 )
 
     return my_achievement_percents

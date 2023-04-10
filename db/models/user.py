@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, JSON
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from db.config import Base
@@ -18,7 +18,6 @@ class User(Base, DateBase):
     sns_key = Column(String(64), unique=True, index=True, nullable=False)
     email = Column(String(100), unique=True)
     phone = Column(String(20), unique=True)
-    achievement_percent = Column(JSON)
 
     objectives = relationship(Objective.__name__, backref="user", passive_deletes=False)
     templates = relationship(Template.__name__, backref="user", passive_deletes=False)

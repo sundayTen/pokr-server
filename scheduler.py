@@ -6,7 +6,7 @@ from fastapi_scheduler import SchedulerAdmin
 from crud.achievement_percent.create import create_achievement_percent
 from crud.user.read import get_all_user
 from db.config import get_db
-from env import ACHIEVEMENT_PERCENT_SCHEDULING_HOUR
+from env import ACHIEVEMENT_PERCENT_SCHEDULING_HOUR, MISFIRE_GRACE_SECONDS
 from schemas.achievement_percent import AchievementPercentSchema
 from schemas.common import PeriodCategory
 from service.metrics import calculate_achievement_percent
@@ -17,7 +17,11 @@ site = AdminSite(
 scheduler = SchedulerAdmin.bind(site)
 
 
-@scheduler.scheduled_job("interval", hours=ACHIEVEMENT_PERCENT_SCHEDULING_HOUR)
+@scheduler.scheduled_job(
+    "interval",
+    hours=ACHIEVEMENT_PERCENT_SCHEDULING_HOUR,
+    misfire_grace_time=MISFIRE_GRACE_SECONDS,
+)
 async def calculate_achievement_percent_weekly():
     now = datetime.now()
     if not now.weekday() and now.hour < ACHIEVEMENT_PERCENT_SCHEDULING_HOUR:
@@ -40,12 +44,16 @@ async def calculate_achievement_percent_weekly():
             year=time_for_calculating.year,
             category=PeriodCategory.WEEK,
             label=f"{month}월 {week}주차",
-            percent_of_users=int(percent / real_user_count),
+            percent=int(percent / real_user_count) if real_user_count else 0,
         )
         await create_achievement_percent(achievement_percent, db)
 
 
-@scheduler.scheduled_job("interval", hours=ACHIEVEMENT_PERCENT_SCHEDULING_HOUR)
+@scheduler.scheduled_job(
+    "interval",
+    hours=ACHIEVEMENT_PERCENT_SCHEDULING_HOUR,
+    misfire_grace_time=MISFIRE_GRACE_SECONDS,
+)
 async def calculate_achievement_percent_monthly():
     now = datetime.now()
     if now.day == 1 and now.hour < ACHIEVEMENT_PERCENT_SCHEDULING_HOUR:
@@ -66,6 +74,6 @@ async def calculate_achievement_percent_monthly():
             year=now.year,
             category=PeriodCategory.MONTH,
             label=f"{now.month}월",
-            percent_of_users=int(percent / real_user_count),
+            percent=int(percent / real_user_count) if real_user_count else 0,
         )
         await create_achievement_percent(achievement_percent, db)
