@@ -27,8 +27,12 @@ async def calculate_achievement_percent_weekly():
     if not now.weekday() and now.hour < ACHIEVEMENT_PERCENT_SCHEDULING_HOUR:
         db = next(get_db())
         percent, real_user_count = 0, 0
+        time_for_calculating = now.today() - timedelta(days=7)
+        month = time_for_calculating.month
+        week = (time_for_calculating.day - 1) // 7 + 1
         users = await get_all_user(db)
         for user in users:
+            current_percent = 0
             if user.objectives:
                 current_percent = await calculate_achievement_percent(
                     user.objectives, PeriodCategory.WEEK
@@ -37,16 +41,26 @@ async def calculate_achievement_percent_weekly():
                     percent += current_percent
                     real_user_count += 1
 
-        time_for_calculating = datetime.now().today() - timedelta(days=7)
-        month = time_for_calculating.month
-        week = (time_for_calculating.day - 1) // 7 + 1
-        achievement_percent = AchievementPercentSchema(
-            year=time_for_calculating.year,
-            category=PeriodCategory.WEEK,
-            label=f"{month}월 {week}주차",
-            percent=int(percent / real_user_count) if real_user_count else 0,
+            await create_achievement_percent(
+                AchievementPercentSchema(
+                    user_id=user.id,
+                    year=time_for_calculating.year,
+                    category=PeriodCategory.WEEK,
+                    label=f"{month}월 {week}주차",
+                    percent=current_percent if current_percent else 0,
+                ),
+                db,
+            )
+
+        await create_achievement_percent(
+            AchievementPercentSchema(
+                year=time_for_calculating.year,
+                category=PeriodCategory.WEEK,
+                label=f"{month}월 {week}주차",
+                percent=int(percent / real_user_count) if real_user_count else 0,
+            ),
+            db,
         )
-        await create_achievement_percent(achievement_percent, db)
 
 
 @scheduler.scheduled_job(
@@ -59,8 +73,10 @@ async def calculate_achievement_percent_monthly():
     if now.day == 1 and now.hour < ACHIEVEMENT_PERCENT_SCHEDULING_HOUR:
         db = next(get_db())
         percent, real_user_count = 0, 0
+        a_week_ago = now.today() - timedelta(days=7)
         users = await get_all_user(db)
         for user in users:
+            current_percent = 0
             if user.objectives:
                 current_percent = await calculate_achievement_percent(
                     user.objectives, PeriodCategory.MONTH
@@ -69,11 +85,23 @@ async def calculate_achievement_percent_monthly():
                     percent += current_percent
                     real_user_count += 1
 
-        now = datetime.now().today() - timedelta(days=7)
-        achievement_percent = AchievementPercentSchema(
-            year=now.year,
-            category=PeriodCategory.MONTH,
-            label=f"{now.month}월",
-            percent=int(percent / real_user_count) if real_user_count else 0,
+            await create_achievement_percent(
+                AchievementPercentSchema(
+                    user_id=user.id,
+                    year=a_week_ago.year,
+                    category=PeriodCategory.MONTH,
+                    label=f"{a_week_ago.month}월",
+                    percent=current_percent if current_percent else 0,
+                ),
+                db,
+            )
+
+        await create_achievement_percent(
+            AchievementPercentSchema(
+                year=a_week_ago.year,
+                category=PeriodCategory.MONTH,
+                label=f"{a_week_ago.month}월",
+                percent=int(percent / real_user_count) if real_user_count else 0,
+            ),
+            db,
         )
-        await create_achievement_percent(achievement_percent, db)

@@ -6,6 +6,7 @@ from schemas.common import PeriodCategory
 
 class AchievementPercentSchema(CamelModel):
     id: int | None
+    user_id: int | None
     year: int
     category: PeriodCategory
     label: str
@@ -13,6 +14,7 @@ class AchievementPercentSchema(CamelModel):
 
     async def make_achievement_percent(self):
         return AchievementPercent(
+            user_id=self.user_id,
             year=self.year,
             category=self.category.name,
             label=self.label,
