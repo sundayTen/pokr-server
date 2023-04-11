@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.auth import router as auth_router
 from api.index import router as index_router
 from api.initiatives import router as initiative_router
 from api.key_results import router as key_result_router
@@ -25,7 +26,8 @@ app.add_middleware(
 )
 
 app.include_router(index_router, tags=["INDEX"], prefix="/api")
-# app.include_router(auth_router, tags=["AUTH"], prefix="/api/auth")
+
+app.include_router(auth_router, tags=["AUTH"], prefix="/api/auth")
 app.include_router(initiative_router, tags=["INITIATIVE"], prefix="/api/initiatives")
 app.include_router(key_result_router, tags=["KEY_RESULT"], prefix="/api/key-results")
 app.include_router(metrics_router, tags=["METRIC"], prefix="/api/metrics")
