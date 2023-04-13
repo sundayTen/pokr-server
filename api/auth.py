@@ -1,10 +1,21 @@
-from fastapi import APIRouter, Depends
+import json
+import urllib.request
+
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from db.config import get_db
+from crud.user.read import get_user_by_platform_and_sns_key
+from db.config import get_db, encrypt_data
 from db.models.user import User
-from env import JWT_PREFIX
+from env import (
+    JWT_PREFIX,
+    NAVER_PROFILE_URL,
+    NAVER_JWT_PREFIX,
+    NAVER_AUTHORIZATION_HEADER,
+)
+from errors import CREDENTIALS_EXCEPTION
 from jwt import create_access_token
+from schemas.common import Platform
 from schemas.requests.auth_request import NaverSignupRequest
 from schemas.responses.common_response import TokenResponse
 
@@ -15,12 +26,27 @@ router = APIRouter()
 async def signup(
     naver_signup_request: NaverSignupRequest, db: Session = Depends(get_db)
 ) -> TokenResponse:
-    naver_signup_request.access_token  # TODO 네이버에서 데이터 가져오기.
-    # TODO 이미 유저가 있는지 확인
-    user = None
-    # TODO sns 값 암호화, 랜덤 닉네임 설정
+    request = urllib.request.Request(NAVER_PROFILE_URL)
+    request.add_header(
+        NAVER_AUTHORIZATION_HEADER, NAVER_JWT_PREFIX + naver_signup_request.access_token
+    )
+    response = urllib.request.urlopen(request)
+
+    if response.getcode() == status.HTTP_200_OK:
+        response_body = response.read()
+        sns_key = json.loads(response_body.decode("utf-8"))["response"]["id"]
+    else:
+        raise CREDENTIALS_EXCEPTION
+
+    encrypted_sns_key = await encrypt_data(sns_key)
+    user = await get_user_by_platform_and_sns_key(Platform.NAVER, encrypted_sns_key)
+    # TODO 랜덤 닉네임 설정
     if not user:
-        user = User(platform="NAVER", sns_key="platform_id", nickname="random_nickname")
+        user = User(
+            platform=Platform.NAVER.name,
+            sns_key=encrypted_sns_key,
+            nickname="random_nickname",
+        )
         db.add(user)
         db.commit()
 

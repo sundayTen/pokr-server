@@ -11,3 +11,7 @@ class Token(BaseModel):
 class PeriodCategory(Enum):
     WEEK = auto()
     MONTH = auto()
+
+
+class Platform(Enum):
+    NAVER = auto()
