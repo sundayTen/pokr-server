@@ -4,8 +4,9 @@ import urllib.request
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
+from crud.nickname.read import get_random_nickname
 from crud.user.read import get_user_by_platform_and_sns_key
-from db.config import get_db, encrypt_data
+from db.config import get_db
 from db.models.user import User
 from env import (
     JWT_PREFIX,
@@ -18,6 +19,7 @@ from jwt import create_access_token
 from schemas.common import Platform
 from schemas.requests.auth_request import NaverSignupRequest
 from schemas.responses.common_response import TokenResponse
+from service.common import encrypt_data
 
 router = APIRouter()
 
@@ -40,13 +42,16 @@ async def signup(
 
     encrypted_sns_key = await encrypt_data(sns_key)
     user = await get_user_by_platform_and_sns_key(Platform.NAVER, encrypted_sns_key)
-    # TODO 랜덤 닉네임 설정
+    # TODO 리팩토링 필요
     if not user:
+        nickname = await get_random_nickname(db)
         user = User(
             platform=Platform.NAVER.name,
             sns_key=encrypted_sns_key,
-            nickname="random_nickname",
+            nickname=nickname,
         )
+        nickname.count += 1
+        db.add(nickname)
         db.add(user)
         db.commit()
 

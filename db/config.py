@@ -1,10 +1,8 @@
-import hashlib
-
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-from env import DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE, CRYPTO_SALT
+from env import DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE
 
 database_url = URL.create(
     drivername="mysql+pymysql",
@@ -23,7 +21,3 @@ Base = declarative_base()
 def get_db():
     with (SessionLocal()) as db:
         yield db
-
-
-async def encrypt_data(data: str):
-    return hashlib.sha256((data + CRYPTO_SALT).encode()).hexdigest()
