@@ -21,7 +21,6 @@ async def read_review(review_id: int, db: Session = Depends(get_db)) -> ReviewRe
 async def post_review(
     review_request: ReviewCreateRequest, db: Session = Depends(get_db)
 ) -> IdResponse:
-    # TODO 현재는 유저가 하나라도 있어야 가능, JWT 기능 필요.
     review_id: int = await create_review(1, review_request.make_review_schema(), db)
 
     return IdResponse(id=review_id)
@@ -31,11 +30,9 @@ async def post_review(
 async def update_review(
     review_id: int, review_request: ReviewUpdateRequest, db: Session = Depends(get_db)
 ) -> IdResponse:
-    # TODO 수정이 똑같을 때는 202 raise
     return IdResponse(id=review_id)
 
 
 @router.delete("/{review_id}", description="회고 삭제")
 async def delete_review(review_id: int, db: Session = Depends(get_db)) -> IdResponse:
-    # TODO 이미 삭제된 것은 204 raise
     return IdResponse(id=review_id)

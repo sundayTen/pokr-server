@@ -32,7 +32,6 @@ async def update_template(
     template_request: TemplateUpdateRequest,
     db: Session = Depends(get_db),
 ) -> IdResponse:
-    # TODO 수정이 똑같을 때는 202 raise
     return IdResponse(id=template_id)
 
 
@@ -40,5 +39,4 @@ async def update_template(
 async def delete_template(
     template_id: int, db: Session = Depends(get_db)
 ) -> IdResponse:
-    # TODO 이미 삭제된 것은 204 raise
     return IdResponse(id=template_id)
