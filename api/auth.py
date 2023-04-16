@@ -28,11 +28,14 @@ router = APIRouter()
 async def signup(
     naver_signup_request: NaverSignupRequest, db: Session = Depends(get_db)
 ) -> TokenResponse:
+    import ssl
+
+    context = ssl._create_unverified_context()
     request = urllib.request.Request(NAVER_PROFILE_URL)
     request.add_header(
         NAVER_AUTHORIZATION_HEADER, NAVER_JWT_PREFIX + naver_signup_request.access_token
     )
-    response = urllib.request.urlopen(request)
+    response = urllib.request.urlopen(request, context=context)
 
     if response.getcode() == status.HTTP_200_OK:
         response_body = response.read()
@@ -42,9 +45,9 @@ async def signup(
         raise CREDENTIALS_EXCEPTION
 
     encrypted_sns_key = await encrypt_data(sns_key)
-    user = await get_user_by_platform_and_sns_key(Platform.NAVER, encrypted_sns_key)
+    user = await get_user_by_platform_and_sns_key(Platform.NAVER, encrypted_sns_key, db)
     if not user:
-        create_new_user(Platform.NAVER.name, encrypted_sns_key, db)
+        user = await create_new_user(Platform.NAVER.name, encrypted_sns_key, db)
 
     return TokenResponse(
         access_token=await create_access_token(user), token_type=JWT_PREFIX

@@ -10,7 +10,7 @@ async def get_random_nickname(db: Session):
     random_number = (random() * 10000 % latest_nickname.id) + 1
     nickname = (
         db.query(Nickname)
-        .filter(id >= random_number)
+        .filter(Nickname.id >= random_number)
         .order_by(Nickname.id.desc())
         .first()
     )
@@ -18,7 +18,7 @@ async def get_random_nickname(db: Session):
         return nickname
     return (
         db.query(Nickname)
-        .filter(id <= random_number)
+        .filter(Nickname.id <= random_number)
         .order_by(Nickname.id.asc())
         .first()
     )

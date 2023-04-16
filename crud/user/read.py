@@ -16,5 +16,7 @@ async def get_user_by_platform_and_sns_key(
     platform: Platform, encrypted_sns_key: str, db: Session
 ) -> User:
     return (
-        db.query(User).filter(platform=platform.name, sns_key=encrypted_sns_key).first()
+        db.query(User)
+        .filter(User.platform == platform.name, User.sns_key == encrypted_sns_key)
+        .first()
     )
