@@ -25,7 +25,7 @@ router = APIRouter()
 
 
 @router.post("/login/naver", description="네이버 회원가입 및 로그인", status_code=200)
-async def signup(
+async def sign_in_naver(
     naver_signup_request: NaverSignupRequest, db: Session = Depends(get_db)
 ) -> TokenResponse:
     import ssl
