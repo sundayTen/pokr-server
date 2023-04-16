@@ -25,6 +25,6 @@ jobs:
                   cd /home/${{ env.SERVER_USER }}/${{ env.REPOSITORY }}
                   git pull https://${{ env.GIT_USER }}:${{ secrets.USER_TOKEN }}@github.com/${{ env.OWNER_OR_ORGANIZATION }}/${{ env.REPOSITORY }}.git ${{ env.BRANCH }}
             - name: Install Library
-              run: pip3.11 install -r requirements.txt
+              run: sudo pip3.11 install -r requirements.txt
             - name: Run Server
               run: sudo python3.11 main.py
