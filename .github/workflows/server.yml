@@ -9,7 +9,8 @@ env:
     CONTAINER: server
     OWNER_OR_ORGANIZATION: sundayTen
     REPOSITORY: pokr-server
-    USER: fksk94
+    SERVER_USER: bitnami
+    GIT_USER: fksk94
     BRANCH: develop
 
 jobs:
@@ -21,8 +22,8 @@ jobs:
               uses: actions/checkout@v2
             - name: Pull source code
               run: |
-                  cd /home/actions/${{ env.REPOSITORY }}
-                  git pull https://${{ env.USER }}:${{ secrets.USER_TOKEN }}@github.com/${{ env.OWNER_OR_ORGANIZATION }}/${{ env.REPOSITORY }}.git ${{ env.BRANCH }}
+                  cd /home/${{ env.SERVER_USER }}/${{ env.REPOSITORY }}
+                  git pull https://${{ env.GIT_USER }}:${{ secrets.USER_TOKEN }}@github.com/${{ env.OWNER_OR_ORGANIZATION }}/${{ env.REPOSITORY }}.git ${{ env.BRANCH }}
             - name: Install Library
               run: pip3 install -r requirements.txt
             - name: Run Server
