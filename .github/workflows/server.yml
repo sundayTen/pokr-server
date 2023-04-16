@@ -1,0 +1,29 @@
+name: pokr CD
+
+on:
+    push:
+        branches: [develop]
+env:
+    PORT: 8080
+    IMAGE: server
+    CONTAINER: server
+    OWNER_OR_ORGANIZATION: sundayTen
+    REPOSITORY: pokr-server
+    USER: fksk94
+    BRANCH: develop
+
+jobs:
+    deploy:
+        name: Deploy
+        runs-on: [pokr]
+        steps:
+            - name: Check out source code
+              uses: actions/checkout@v2
+            - name: Pull source code
+              run: |
+                  cd /home/actions/${{ env.REPOSITORY }}
+                  git pull https://${{ env.USER }}:${{ secrets.USER_TOKEN }}@github.com/${{ env.OWNER_OR_ORGANIZATION }}/${{ env.REPOSITORY }}.git ${{ env.BRANCH }}
+            - name: Install Library
+              run: pip3 install -r requirements.txt
+            - name: Run Server
+              run: Python3 main.py
