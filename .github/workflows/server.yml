@@ -31,4 +31,4 @@ jobs:
             - name: Run Server
               run: |
                 cp /home/${{ env.SERVER_USER }}/${{ env.REPOSITORY }}/.env ./.env
-                python3.11 main.py &
+                nohup python3.11 main.py &
