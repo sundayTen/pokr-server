@@ -24,7 +24,13 @@ jobs:
               run: |
                   cd /home/${{ env.SERVER_USER }}/${{ env.REPOSITORY }}
                   git pull https://${{ env.GIT_USER }}:${{ secrets.USER_TOKEN }}@github.com/${{ env.OWNER_OR_ORGANIZATION }}/${{ env.REPOSITORY }}.git ${{ env.BRANCH }}
-            - name: Install Libraries
-              run: pip3.11 install -r requirements.txt
-            - name: Run Server
-              run: /home/${{ env.SERVER_USER }}/run_server.sh
+            - name: Docker build
+              run: docker build -t ${{ env.IMAGE }} /home/${{ env.SERVER_USER }}/${{ env.REPOSITORY }}
+            - name: Docker stop
+              run: |
+                  docker ps -f name=${{ env.CONTAINER }} -q | xargs --no-run-if-empty docker container stop
+                  docker container ls -a -f name=${{ env.CONTAINER }} -q | xargs -r docker container rm
+            - name: Docker run
+              run: docker run -d --name ${{ env.CONTAINER }} -p ${{ env.PORT }}:${{ env.PORT }} -v /etc/localtime:/etc/localtime:ro -v /home/actions/assets/image:/image --restart always ${{ env.IMAGE }}
+            - name: remove Docker <none> image
+              run: if [ "$(docker images -f dangling=true -q)" != "" ]; then docker rmi $(docker images -f dangling=true -q); fi
