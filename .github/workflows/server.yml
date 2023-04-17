@@ -26,9 +26,7 @@ jobs:
                   git pull https://${{ env.GIT_USER }}:${{ secrets.USER_TOKEN }}@github.com/${{ env.OWNER_OR_ORGANIZATION }}/${{ env.REPOSITORY }}.git ${{ env.BRANCH }}
             - name: Install Libraries
               run: pip3.11 install -r requirements.txt
-            - name: Check
-              run: pwd
             - name: Run Server
               run: |
-                cp /home/${{ env.SERVER_USER }}/${{ env.REPOSITORY }}/.env ./.env
-                nohup python3.11 main.py &
+                  cd /home/bitnami/pokr-server
+                  nohup python3.11 main.py &
