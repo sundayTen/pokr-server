@@ -27,6 +27,8 @@ jobs:
             - name: Install Libraries
               run: pip3.11 install -r requirements.txt
             - name: Check
-              run: cp /home/${{ env.SERVER_USER }}/${{ env.REPOSITORY }}/.env ./.env
+              run: pwd
             - name: Run Server
-              run: python3.11 main.py
+              run: |
+                cp /home/${{ env.SERVER_USER }}/${{ env.REPOSITORY }}/.env ./.env
+                python3.11 main.py &
