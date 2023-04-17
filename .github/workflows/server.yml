@@ -27,6 +27,4 @@ jobs:
             - name: Install Libraries
               run: pip3.11 install -r requirements.txt
             - name: Run Server
-              run: |
-                  cd /home/bitnami/pokr-server
-                  nohup python3.11 main.py &
+              run: nohup python3.11 /home/bitnami/pokr-server/main.py &
