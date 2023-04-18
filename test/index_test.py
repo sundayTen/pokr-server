@@ -1,7 +1,9 @@
 import os
 import sys
 
+import pytest
 from fastapi.testclient import TestClient
+from httpx import AsyncClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -34,7 +36,9 @@ app.dependency_overrides[get_db] = override_get_db
 client = TestClient(app)
 
 
-def test_health_check():
-    response = client.get("/api/health")
+@pytest.mark.anyio
+async def test_health_check():
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        response = await ac.get("/api/health")
     assert response.status_code == 200
     assert response.json() == "green"
