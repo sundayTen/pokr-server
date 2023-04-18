@@ -13,7 +13,6 @@ from db.config import Base, engine
 from env import ENVIRONMENT
 from scheduler import site, scheduler
 
-Base.metadata.create_all(bind=engine)
 app = FastAPI(docs_url="/api/docs", redoc_url="/api/redoc")
 
 origins = ["http://127.0.0.1:3000", "http://localhost:3000"]
@@ -44,6 +43,7 @@ async def startup():
 
 
 if __name__ == "__main__":
+    Base.metadata.create_all(bind=engine)
     if ENVIRONMENT == "local":
         uvicorn.run("main:app", host="127.0.0.1", port=8080, reload=True)
     else:
