@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from crud.objective.create import create_objective
+from crud.objective.create import create_objective, copy_objective
 from crud.objective.delete import delete_objective
 from crud.objective.update import update_objective
 from db.config import get_db
@@ -78,4 +78,19 @@ async def update_my_goal(
 
     await update_objective(
         objective_id, objective_request.make_objective_nullable_schema(), db
+    )
+
+
+@router.post("/{objective_id}/copy", description="목표 복제")
+async def copy_my_goal(
+    objective_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(check_user),
+) -> IdResponse:
+    validate_id_in_objects(user.objectives, objective_id)
+
+    return IdResponse(
+        id=await copy_objective(
+            next(filter(lambda x: x.id == objective_id, user.objectives)), db
+        )
     )
