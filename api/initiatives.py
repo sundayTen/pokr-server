@@ -48,7 +48,7 @@ async def create_my_initiative(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> IdResponse:
-    validate_id_in_objects(
+    await validate_id_in_objects(
         list(chain(*[obj.key_results for obj in user.objectives])),
         initiative_request.key_result_id,
     )
@@ -67,7 +67,7 @@ async def delete_my_initiative(
     user_initiatives: List[List[Initiative]] = [
         kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
     ]
-    validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
+    await validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
 
     await delete_initiative(initiative_id, db)
 
@@ -82,7 +82,7 @@ async def update_my_initiative(
     user_initiatives: List[List[Initiative]] = [
         kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
     ]
-    validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
+    await validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
 
     await update_initiative(
         initiative_id, initiative_request.make_initiative_nullable_schema(), db
@@ -99,6 +99,6 @@ async def check_done_initiative(
     user_initiatives: List[List[Initiative]] = [
         kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
     ]
-    validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
+    await validate_id_in_objects(list(chain(*user_initiatives)), initiative_id)
 
     await done_initiative(initiative_id, db, count)

@@ -46,7 +46,7 @@ async def create_my_key_result(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> IdResponse:
-    validate_id_in_objects(user.objectives, key_result_request.objective_id)
+    await validate_id_in_objects(user.objectives, key_result_request.objective_id)
 
     return IdResponse(
         id=await create_key_result(key_result_request.make_key_result_schema(), db)
@@ -59,7 +59,7 @@ async def delete_my_key_result(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
-    validate_id_in_objects(
+    await validate_id_in_objects(
         chain(*[obj.key_results for obj in user.objectives]), key_result_id
     )
 
@@ -73,7 +73,7 @@ async def update_my_key_result(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
-    validate_id_in_objects(
+    await validate_id_in_objects(
         list(chain(*[obj.key_results for obj in user.objectives])), key_result_id
     )
 

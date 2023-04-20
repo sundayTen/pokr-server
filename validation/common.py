@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
 
-def validate_id_in_objects(objs, obj_id: int) -> None:
+async def validate_id_in_objects(objs, obj_id: int) -> None:
     for obj in objs:
         if obj.id == obj_id:
             break

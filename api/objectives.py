@@ -62,7 +62,7 @@ async def delete_my_goal(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
-    validate_id_in_objects(user.objectives, objective_id)
+    await validate_id_in_objects(user.objectives, objective_id)
 
     await delete_objective(objective_id, db)
 
@@ -74,7 +74,7 @@ async def update_my_goal(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
-    validate_id_in_objects(user.objectives, objective_id)
+    await validate_id_in_objects(user.objectives, objective_id)
 
     await update_objective(
         objective_id, objective_request.make_objective_nullable_schema(), db
@@ -87,7 +87,7 @@ async def copy_my_goal(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> IdResponse:
-    validate_id_in_objects(user.objectives, objective_id)
+    await validate_id_in_objects(user.objectives, objective_id)
 
     return IdResponse(
         id=await copy_objective(
