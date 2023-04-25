@@ -17,7 +17,7 @@ from schemas.metrics import ObjectiveAchievementPercentSchema
 from schemas.objective import ObjectiveWithKeyResultsSchema
 
 
-async def get_objective_achievement_percent(
+async def get_okr_achievement_percent(
     objective: ObjectiveWithKeyResultsSchema,
 ) -> ObjectiveAchievementPercentSchema:
     key_result_percent, initiative_percent = 0, 0

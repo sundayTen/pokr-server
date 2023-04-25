@@ -13,7 +13,7 @@ from schemas.responses.achievement_percent_response import (
     get_achievement_percent_response_by_label,
 )
 from service.metrics import (
-    get_objective_achievement_percent,
+    get_okr_achievement_percent,
 )
 
 router = APIRouter()
@@ -86,6 +86,5 @@ async def get_my_weekly_metrics(
 @router.get("/objectives", description="나의 목표 달성 수치", response_model=List[dict])
 async def get_my_objectives(user: User = Depends(check_user)) -> List[dict]:
     return [
-        await get_objective_achievement_percent(objective)
-        for objective in user.objectives
+        await get_okr_achievement_percent(objective) for objective in user.objectives
     ]
