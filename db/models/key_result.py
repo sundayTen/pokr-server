@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, Date, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -22,3 +24,14 @@ class KeyResult(Base, DateBase):
     initiatives = relationship(
         Initiative.__name__, backref="key_result", passive_deletes=False
     )
+
+    async def copy(self) -> "KeyResult":
+        return KeyResult(
+            objective_id=self.objective_id,
+            title=self.title,
+            description=self.description,
+            open_date=datetime.now().date(),
+            due_date=datetime.now().date(),
+            achievement_score=0,
+            initiatives=[await initiative.copy() for initiative in self.initiatives],
+        )

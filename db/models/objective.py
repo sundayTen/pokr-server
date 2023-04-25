@@ -29,4 +29,5 @@ class Objective(Base, DateBase):
             title=self.title,
             year=datetime.now().year,
             achievement=False,
+            key_results=[await key_result.copy() for key_result in self.key_results],
         )

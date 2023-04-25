@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, Date, JSON
 from sqlalchemy.orm import relationship
 
@@ -22,3 +24,14 @@ class Initiative(Base, DateBase):
     done_times = Column(JSON)
 
     memos = relationship(Memo.__name__, backref="initiative", passive_deletes=False)
+
+    async def copy(self) -> "Initiative":
+        return Initiative(
+            key_result_id=self.key_result_id,
+            title=self.title,
+            description=self.description,
+            open_date=datetime.now().date(),
+            due_date=datetime.now().date(),
+            goal_metrics=self.goal_metrics,
+            current_metrics=0,
+        )
