@@ -2,6 +2,7 @@ from itertools import chain
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.params import Query
 from sqlalchemy.orm import Session
 
 from crud.initiative.create import create_initiative
@@ -92,7 +93,7 @@ async def update_my_initiative(
 @router.post("/{initiative_id}/done", description="주요 행동 완료")
 async def check_done_initiative(
     initiative_id: int,
-    count: int = 1,
+    count: int = Query(ge=1, default=1),
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
