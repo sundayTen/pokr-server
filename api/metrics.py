@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, date
 from typing import List
 
 from fastapi import Depends, Path, APIRouter
+from fastapi.params import Query
 from sqlalchemy.orm import Session
 
 from crud.achievement_percent.read import get_achievement_percent
@@ -22,7 +23,7 @@ router = APIRouter()
 @router.get("/graph/half/{num}", description="나의 달성 수치[월별]")
 async def get_my_monthly_metrics(
     num: int = Path(..., ge=1, le=2),
-    year: int = datetime.now().year,
+    year: int = Query(default=datetime.now().year, ge=2023),
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> List[AchievementPercentResponse]:
@@ -51,7 +52,7 @@ async def get_my_monthly_metrics(
 @router.get("/graph/quarter/{num}", description="나의 달성 수치[주별]")
 async def get_my_weekly_metrics(
     num: int = Path(..., ge=1, le=4),
-    year: int = datetime.now().year,
+    year: int = Query(default=datetime.now().year, ge=2023),
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> List[AchievementPercentResponse]:
