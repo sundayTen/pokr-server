@@ -1,17 +1,19 @@
 from datetime import date
 
 from fastapi_camelcase import CamelModel
+from pydantic import Field
 
+from env import DESCRIPTION_MAX_LENGTH, TITLE_MAX_LENGTH
 from schemas.initiative import InitiativeSchema, InitiativeNullableSchema
 
 
 class InitiativeCreateRequest(CamelModel):
     key_result_id: int
-    title: str
-    description: str | None
+    title: str = Field(max_length=TITLE_MAX_LENGTH)
+    description: str | None = Field(max_length=DESCRIPTION_MAX_LENGTH)
     open_date: date
     due_date: date
-    goal_metrics: int
+    goal_metrics: int = Field(ge=1)
 
     def make_initiative_schema(self, current_metrics: int = 0):
         return InitiativeSchema(
@@ -26,12 +28,12 @@ class InitiativeCreateRequest(CamelModel):
 
 
 class InitiativeUpdateRequest(CamelModel):
-    title: str | None
-    description: str | None
+    title: str | None = Field(max_length=TITLE_MAX_LENGTH)
+    description: str | None = Field(max_length=DESCRIPTION_MAX_LENGTH)
     open_date: date | None
     due_date: date | None
-    goal_metrics: int | None
-    current_metrics: int | None
+    goal_metrics: int | None = Field(ge=1)
+    current_metrics: int | None = Field(ge=0)
 
     def make_initiative_nullable_schema(self):
         return InitiativeNullableSchema(

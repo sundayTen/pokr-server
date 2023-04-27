@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.params import Query
 from sqlalchemy.orm import Session
 
 from crud.objective.create import create_objective, copy_objective
@@ -25,7 +26,7 @@ router = APIRouter()
 
 @router.get("/", description="년도별 나의 모든 목표 보기")
 async def get_my_goals(
-    year: int, user: User = Depends(check_user)
+    year: int = Query(ge=2023), user: User = Depends(check_user)
 ) -> List[ObjectiveResponse]:
     objectives = list(filter(lambda x: x.year == year, user.objectives))
     return [await make_objective_response(objective) for objective in objectives]

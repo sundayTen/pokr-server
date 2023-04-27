@@ -1,14 +1,16 @@
 from datetime import date
 
 from fastapi_camelcase import CamelModel
+from pydantic import Field
 
+from env import TITLE_MAX_LENGTH, DESCRIPTION_MAX_LENGTH
 from schemas.key_result import KeyResultSchema, KeyResultNullableSchema
 
 
 class KeyResultCreateRequest(CamelModel):
     objective_id: int
-    title: str
-    description: str | None
+    title: str = Field(max_length=TITLE_MAX_LENGTH)
+    description: str | None = Field(max_length=DESCRIPTION_MAX_LENGTH)
     open_date: date
     due_date: date
 
@@ -24,11 +26,11 @@ class KeyResultCreateRequest(CamelModel):
 
 
 class KeyResultUpdateRequest(CamelModel):
-    title: str | None
-    description: str | None
+    title: str | None = Field(max_length=TITLE_MAX_LENGTH)
+    description: str | None = Field(max_length=DESCRIPTION_MAX_LENGTH)
     open_date: date | None
     due_date: date | None
-    achievement_score: int | None
+    achievement_score: int | None = Field(ge=0, le=100)
 
     def make_key_result_nullable_schema(self):
         return KeyResultNullableSchema(
