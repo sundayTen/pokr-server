@@ -18,7 +18,7 @@ from schemas.responses.key_result_response import (
     KeyResultResponse,
     make_key_result_response,
 )
-from validation.common import validate_id_in_objects
+from validation.common import validate_id_in_objects, validate_period
 
 router = APIRouter()
 
@@ -47,6 +47,7 @@ async def create_my_key_result(
     user: User = Depends(check_user),
 ) -> IdResponse:
     await validate_id_in_objects(user.objectives, key_result_request.objective_id)
+    await validate_period(key_result_request.open_date, key_result_request.due_date)
 
     return IdResponse(
         id=await create_key_result(key_result_request.make_key_result_schema(), db)
@@ -73,8 +74,15 @@ async def update_my_key_result(
     db: Session = Depends(get_db),
     user: User = Depends(check_user),
 ) -> None:
-    await validate_id_in_objects(
-        list(chain(*[obj.key_results for obj in user.objectives])), key_result_id
+    key_result_generator = chain(*[obj.key_results for obj in user.objectives])
+    await validate_id_in_objects(list(key_result_generator), key_result_id)
+    for key_result in key_result_generator:
+        if key_result.id == key_result_id:
+            updatable_key_result = key_result
+
+    await validate_period(
+        key_result_request.open_date or updatable_key_result.open_date,
+        key_result_request.due_date or updatable_key_result.due_date,
     )
 
     await update_key_result(
