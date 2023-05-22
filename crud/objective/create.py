@@ -15,7 +15,8 @@ async def create_objective(
 
 
 async def copy_objective(objective: Objective, db: Session) -> int:
-    db.add(await objective.copy())
+    copied_objective = await objective.copy()
+    db.add(copied_objective)
     db.commit()
 
-    return objective.id
+    return copied_objective.id
