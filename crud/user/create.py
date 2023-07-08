@@ -19,4 +19,5 @@ async def create_new_user(
     db.add(nickname)
     db.add(user)
     db.commit()
-    db.flush()
+
+    return uesr
