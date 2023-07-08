@@ -20,4 +20,4 @@ async def create_new_user(
     db.add(user)
     db.commit()
 
-    return uesr
+    return user
