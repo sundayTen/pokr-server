@@ -113,3 +113,21 @@ async def check_done_initiative(
     await validate_id_in_objects(list(chain(*user_initiative_lists)), initiative_id)
 
     await done_initiative(initiative_id, db, count)
+
+
+@router.post("/{initiative_id}/undo", description="주요 행동 완료 되돌리기")
+async def undo_initiative(
+    initiative_id: int,
+    count: int = Query(ge=1, default=1),
+    db: Session = Depends(get_db),
+    user: User = Depends(check_user),
+) -> None:
+    user_initiative_lists: List[List[Initiative]] = [
+        kr.initiatives for kr in chain(*[obj.key_results for obj in user.objectives])
+    ]
+    await validate_id_in_objects(list(chain(*user_initiative_lists)), initiative_id)
+
+    if (await done_initiative(initiative_id, db, -count)) == False:
+        raise HTTPException(
+            status_code=400, detail="CurrentMetrics can not be negative."
+        )

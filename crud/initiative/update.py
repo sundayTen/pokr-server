@@ -4,13 +4,18 @@ from db.models.initiative import Initiative
 from schemas.initiative import InitiativeNullableSchema, update_done_times
 
 
-async def done_initiative(initiative_id: int, db: Session, count: int) -> None:
+async def done_initiative(initiative_id: int, db: Session, count: int) -> bool:
     initiative = db.query(Initiative).get(initiative_id)
     initiative.current_metrics += count
+    if initiative.current_metrics < 0:
+        return False
+
     initiative.done_times = await update_done_times(
         initiative, initiative.current_metrics
     )
     db.commit()
+
+    return True
 
 
 async def update_initiative(
